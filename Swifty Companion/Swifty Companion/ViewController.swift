@@ -11,9 +11,13 @@ import Alamofire
 
 class ViewController: UIViewController {
 
+	let apiController = APIController()
 	override func viewDidLoad() {
 		super.viewDidLoad()
 		// Do any additional setup after loading the view, typically from a nib.
+		
+		//apiController.getToken()
+		apiController.getToken()
 	}
 
 	override func didReceiveMemoryWarning() {
