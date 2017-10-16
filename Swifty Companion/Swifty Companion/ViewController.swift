@@ -17,7 +17,6 @@ class ViewController: UIViewController {
 		// Do any additional setup after loading the view, typically from a nib.
 		
 		//apiController.getToken()
-		apiController.getToken()
 	}
 
 	override func didReceiveMemoryWarning() {
