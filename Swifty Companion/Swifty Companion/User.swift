@@ -40,7 +40,7 @@ struct User {
         let url = data?.value(forKeyPath: IntraKey.url) as? URL ?? ""
         let phone = data?.value(forKeyPath: IntraKey.mobileNumber) as? Integer ?? ""
         let location = data?.value(forKeyPath: IntraKey.location) as? String ?? ""
-        let urlString = data?.value(forKeyPath: TwitterKey.ProfileImageURL) as? String ?? ""
+        let urlString = data?.value(forKeyPath: IntraKey.profilePicture) as? String ?? ""
         let profilePicture = (urlString.characters.count > 0) ? URL(string: urlString) : nil
         
         self.email = email
