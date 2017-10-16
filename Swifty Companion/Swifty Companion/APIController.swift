@@ -17,6 +17,7 @@ class APIController {
 	var token: String?
 	
 	init() {
+		self.getToken()
 	}
 	
 	func getToken() {
