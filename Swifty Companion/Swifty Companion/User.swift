@@ -18,17 +18,19 @@ struct User {
     let location: String
     let profilePicture: Data
     let mobileNumber: Integer
+    let wallet: Integer
     
     let profileLevel: Integer           //todo
     let Cursus: String = "WeThinkCode_"
     
-    let wallet: Integer
+
     let correctionPoints: Integer
     let skills: [String:Integer]        // might need its own struct
     let projects: [String]              // might need its own struct
     
     init (data: NSDictionary?) {
         guard
+            let ID = data?.value(forKeyPath: IntraKey.ID) as? Integer,
             let login = data?.value(forKeyPath: IntraKey.login) as? String,
             let email = data?.value(forKeyPath: IntraKey.email) as? String
         else {
@@ -37,12 +39,15 @@ struct User {
         
         let firstName = data?.value(forKeyPath: IntraKey.firstName) as? String ?? ""
         let lastName = data?.value(forKeyPath: IntraKey.lastName) as? String ?? ""
-        let url = data?.value(forKeyPath: IntraKey.url) as? URL ?? ""
-        let phone = data?.value(forKeyPath: IntraKey.mobileNumber) as? Integer ?? ""
+        let userurl = data?.value(forKeyPath: IntraKey.url) as? URL ?? ""
+        let url = (userurl.characters.count > 0) ? URL(string: userurl) : nil
         let location = data?.value(forKeyPath: IntraKey.location) as? String ?? ""
         let urlString = data?.value(forKeyPath: IntraKey.profilePicture) as? String ?? ""
         let profilePicture = (urlString.characters.count > 0) ? URL(string: urlString) : nil
+        let mobilePhone = data?.value(forKeyPath: IntraKey.mobileNumber) as? Integer ?? 0
+        let wallet =  data?.value(forKeyPath: IntraKey.wallet) as? Integer ?? 0
         
+        self.ID = ID
         self.email = email
         self.login = login
         self.firstName = firstName
@@ -50,7 +55,8 @@ struct User {
         self.url = url
         self.location = location
         self.profilePicture = profilePicture
-        self.mobileNumber = mobileNumber
+        self.mobileNumber = mobilePhone
+        self.wallet = wallet
         
         
            }
@@ -67,7 +73,7 @@ struct User {
         static let Cursus: String = "WeThinkCode_"
         static let mobileNumber = "phone"
         static let location = "location"
-        static let wallet = ""
+        static let wallet = "wallet"
         static let correctionPoints = "correction_points"
         static let skills: [String:Integer]        // might need its own struct
         static let projects: [String]
