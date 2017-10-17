@@ -27,11 +27,23 @@ class ViewController: UIViewController, UserControlDelegate {
 	}
 
 	@IBAction func Go(_ sender: Any) {
-		self.apiController?.getUserData("janhoon")
+		self.apiController?.getUserData("tmack")
 	}
 	
-	func displayUserInfo(user: User?) {
+    func displayUserInfo(user: User?) {
 		print(user!.login)
+        print(user!.firstName)
+        print(user!.lastName)
+        print(user!.wallet)
+        print(user!.mobileNumber)
+        print(user!.email)
+        print(user!.correctionPoints)
+        print((user!.cursesUsers[0]))
+       // print((user!.cursesUsers[0] as! NSDictionary).value(forKey: "cursus_id")!)
+         print(((user!.cursesUsers[0] as! NSDictionary).value(forKey: "cursus")! as! NSDictionary).value(forKey: "name")! as! String)
+        //print(user!.)
+        ///todo ill finish the api tomorrow
+        
 	}
 
 }
