@@ -61,8 +61,10 @@ class APIController {
 			Alamofire.request(DataRequest).responseJSON(completionHandler: {
 				response in
 
-				let json = JSON(response.data!).dictionary
-				print(json as Any)
+				let json = JSON(response.data!).dictionaryObject
+                //print (json as Any)
+                let user = User(data: json as NSDictionary?)
+                print (user?.login as Any)
 			
 			})
 			
