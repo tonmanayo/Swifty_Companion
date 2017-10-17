@@ -14,18 +14,37 @@ class ViewController: UIViewController {
 	let apiController = APIController()
 	override func viewDidLoad() {
 		super.viewDidLoad()
-		// Do any additional setup after loading the view, typically from a nib.
+		let scrollView = UIScrollView()
+		let scrollStackView = UIStackView()
 		
-		//apiController.getToken()
+		scrollView.translatesAutoresizingMaskIntoConstraints = false
+		scrollStackView.translatesAutoresizingMaskIntoConstraints = false
+		
+		view.addSubview(scrollView)
+		view.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor, constant: 0.0).isActive = true
+		scrollView.topAnchor.constraint(equalTo: topLayoutGuide.bottomAnchor, constant: 0.0).isActive = true
+		scrollView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 0.0).isActive = true
+		bottomLayoutGuide.topAnchor.constraint(equalTo: scrollView.bottomAnchor, constant: 0.0).isActive = true
+		
+		scrollStackView.axis = .vertical
+		scrollStackView.alignment = .fill
+		scrollStackView.distribution = .fill
+		
+		scrollView.addSubview(scrollStackView)
+		scrollStackView.topAnchor.constraint(equalTo: scrollView.topAnchor, constant: 0).isActive = true
+		scrollStackView.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor, constant: 0).isActive = true
+		scrollStackView.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor, constant: 0).isActive = true
+		scrollStackView.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor, constant: 0).isActive = true
+		scrollStackView.widthAnchor.constraint(equalTo: scrollView.widthAnchor).isActive = true
+		
+		for x in 1...30 {
+			let sectionView: UIStackView = SectionComponent(btnName: String(x))
+			scrollStackView.addArrangedSubview(sectionView)
+		}
 	}
 
 	override func didReceiveMemoryWarning() {
 		super.didReceiveMemoryWarning()
-		// Dispose of any resources that can be recreated.
-	}
-
-	@IBAction func Go(_ sender: Any) {
-		self.apiController.getUserData("janhoon")
 	}
 
 }

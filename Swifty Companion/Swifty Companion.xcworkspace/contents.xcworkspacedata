@@ -2,6 +2,9 @@
 <Workspace
    version = "1.0">
    <FileRef
+      location = "group:SectionComponent.swift">
+   </FileRef>
+   <FileRef
       location = "group:Swifty Companion.xcodeproj">
    </FileRef>
    <FileRef
