@@ -43,30 +43,32 @@ class APIController {
 	func getUserData(_ login: String) {
 		let IdURL = URL(string: "https://api.intra.42.fr/v2/users?filter[login]=\(login.lowercased())")!
 		var IdRequest = URLRequest(url: IdURL)
-		print(self.token!)
+	//	print(self.token!)
 		IdRequest.addValue("Bearer \(self.token!)", forHTTPHeaderField: "Authorization")
-		print(IdURL)
+	//	print(IdURL)
 		
 		Alamofire.request(IdRequest).responseJSON(completionHandler: {
 			response in
 			
-			print(response.request as Any)
+		//	print(response.request as Any)
 			
 			let json = JSON(response.data!).array
-			print(json as Any)
+		//	print(json as Any)
 			let userID = (json?.first?["id"].int!)!
 			
 			let DataURL = URL(string: "https://api.intra.42.fr/v2/users/\(String(userID))")!
 			var DataRequest = URLRequest(url: DataURL)
 			DataRequest.addValue("Bearer \(self.token!)", forHTTPHeaderField: "Authorization")
 			
+            
+            
 			Alamofire.request(DataRequest).responseJSON(completionHandler: {
 				response in
-
+                
 				let json = JSON(response.data!).dictionaryObject
-                //print (json as Any)
+               //print (json as Any)
                 let user = User(data: json as NSDictionary?)
-                print (user?.login as Any)
+              //  print (user?.login as Any)
 				
 				self.delegate?.displayUserInfo(user: user)
 			
