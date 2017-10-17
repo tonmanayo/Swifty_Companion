@@ -9,11 +9,13 @@
 import UIKit
 import Alamofire
 
-class ViewController: UIViewController {
-
-	let apiController = APIController()
+class ViewController: UIViewController, UserControlDelegate {
+	
+	var apiController : APIController?
 	override func viewDidLoad() {
 		super.viewDidLoad()
+		
+		apiController = APIController.init(delegate: self)
 		// Do any additional setup after loading the view, typically from a nib.
 		
 		//apiController.getToken()
@@ -25,7 +27,11 @@ class ViewController: UIViewController {
 	}
 
 	@IBAction func Go(_ sender: Any) {
-		self.apiController.getUserData("janhoon")
+		self.apiController?.getUserData("janhoon")
+	}
+	
+	func displayUserInfo(user: User?) {
+		print(user!.login)
 	}
 
 }
