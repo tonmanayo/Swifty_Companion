@@ -30,7 +30,7 @@ class ViewController: UIViewController, UserControlDelegate {
 		self.apiController?.getUserData("tmack")
 	}
 	
-    func displayUserInfo(user: User?) {
+    func displayUserInfo(user: User?, skills: Skills?) {
 		print(user!.login)
         print(user!.firstName)
         print(user!.lastName)
@@ -38,9 +38,10 @@ class ViewController: UIViewController, UserControlDelegate {
         print(user!.mobileNumber)
         print(user!.email)
         print(user!.correctionPoints)
-        print((user!.cursesUsers[0]))
+        //print((user!.cursesUsers[0]))
+        print(skills!.skill[0].name)
        // print((user!.cursesUsers[0] as! NSDictionary).value(forKey: "cursus_id")!)
-         print(((user!.cursesUsers[0] as! NSDictionary).value(forKey: "cursus")! as! NSDictionary).value(forKey: "name")! as! String)
+        // print(((user!.cursesUsers[1] as! NSDictionary).value(forKey: "cursus")! as! NSDictionary).value(forKey: "name")! as! String)
         //print(user!.)
         ///todo ill finish the api tomorrow
         
