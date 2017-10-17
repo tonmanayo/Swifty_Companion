@@ -12,8 +12,12 @@ import Alamofire
 class ViewController: UIViewController {
 
 	let apiController = APIController()
+	
 	override func viewDidLoad() {
 		super.viewDidLoad()
+	}
+	
+	override func viewDidAppear(_ animated: Bool) {
 		let scrollView = UIScrollView()
 		let scrollStackView = UIStackView()
 		
@@ -37,14 +41,10 @@ class ViewController: UIViewController {
 		scrollStackView.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor, constant: 0).isActive = true
 		scrollStackView.widthAnchor.constraint(equalTo: scrollView.widthAnchor).isActive = true
 		
-		for x in 1...30 {
-			let sectionView: UIStackView = SectionComponent(btnName: String(x))
+		for x in 1...20 {
+			let sectionView: UIStackView = SectionComponent(title: String(x))
 			scrollStackView.addArrangedSubview(sectionView)
 		}
-	}
-
-	override func didReceiveMemoryWarning() {
-		super.didReceiveMemoryWarning()
 	}
 
 }
