@@ -30,6 +30,8 @@ class ViewController: UIViewController {
 		scrollView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 0.0).isActive = true
 		bottomLayoutGuide.topAnchor.constraint(equalTo: scrollView.bottomAnchor, constant: 0.0).isActive = true
 		
+		self.automaticallyAdjustsScrollViewInsets = false //Very important for scroll view auto adjust breaks bounds.
+		
 		scrollStackView.axis = .vertical
 		scrollStackView.alignment = .fill
 		scrollStackView.distribution = .fill
@@ -42,9 +44,10 @@ class ViewController: UIViewController {
 		scrollStackView.widthAnchor.constraint(equalTo: scrollView.widthAnchor).isActive = true
 		
 		let data = [["title": "Info", "infoLabels": [["type": "Wallet", "value": "20"], ["type": "email", "value": "derp@derp.com"]]], ["title": "Projects", "projectLabels": [["name": "Project1", "date": "20-06-2017", "mark": "100%"], ["name": "Project2", "date": "12-09-2017", "mark": "99%"]]]]
-		
-		for element in data {
-			let _ = SectionComponent(values: element, container: scrollStackView)
+		for _ in 1...20 {
+			for element in data {
+				let _ = SectionComponent(values: element, container: scrollStackView)
+			}
 		}
 	}
 

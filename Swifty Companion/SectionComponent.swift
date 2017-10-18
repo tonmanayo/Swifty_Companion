@@ -8,6 +8,10 @@ class SectionComponent: UIStackView {
 		self.axis = .vertical
 		self.alignment = .fill
 		self.distribution = .fill
+		
+		self.layer.borderWidth = 1
+		self.layer.borderColor = UIColor.black.cgColor
+		
 		createSection(sectionTitle: values["title"] as! String, inner: values)
 		container.addArrangedSubview(self)
 	}

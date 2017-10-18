@@ -8,7 +8,7 @@
 
 import UIKit
 
-class ProjectsComponent: UIStackView {
+class ProjectsComponent: UIView {
 
 	init(values: [String: Any], container: UIStackView) {
 		super.init(frame: CGRect.init())
@@ -17,7 +17,7 @@ class ProjectsComponent: UIStackView {
 		container.addArrangedSubview(self)
 	}
 	
-	required init(coder: NSCoder) {
+	required init?(coder: NSCoder) {
 		super.init(coder: coder)
 	}
 	
@@ -27,6 +27,11 @@ class ProjectsComponent: UIStackView {
 		let mark = UILabel()
 		let innerStack = UIStackView()
 		
+		name.translatesAutoresizingMaskIntoConstraints = false
+		date.translatesAutoresizingMaskIntoConstraints = false
+		mark.translatesAutoresizingMaskIntoConstraints = false
+		innerStack.translatesAutoresizingMaskIntoConstraints = false
+		
 		name.text = values["name"] as? String
 		date.text = values["date"] as? String
 		mark.text = values["mark"] as? String
@@ -34,11 +39,19 @@ class ProjectsComponent: UIStackView {
 		mark.textAlignment = NSTextAlignment.right
 		
 		innerStack.distribution = .fillProportionally
+		innerStack.spacing = 5
 		
 		innerStack.addArrangedSubview(name)
 		innerStack.addArrangedSubview(date)
-		self.addArrangedSubview(innerStack)
-		self.addArrangedSubview(mark)
+		self.addSubview(innerStack)
+		self.addSubview(mark)
+		
+		innerStack.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 0).isActive = true
+		innerStack.topAnchor.constraint(equalTo: self.topAnchor, constant: 0).isActive = true
+		innerStack.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: 0).isActive = true
+		mark.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: 0).isActive = true
+		mark.topAnchor.constraint(equalTo: self.topAnchor, constant: 0).isActive = true
+		mark.bottomAnchor.constraint(equalTo: self.bottomAnchor, constant: 0).isActive = true
 	}
 
 }

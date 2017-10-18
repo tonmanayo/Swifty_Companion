@@ -13,6 +13,7 @@ class InfoComponent: UILabel {
 	init(values: [String: Any], container: UIStackView) {
 		super.init(frame: CGRect.init())
 		self.text = "\(values["type"] as! String): \(values["value"] as! String)"
+		self.heightAnchor.constraint(equalToConstant: 30).isActive = true
 		container.addArrangedSubview(self)
 	}
 	
