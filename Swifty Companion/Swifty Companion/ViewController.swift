@@ -44,6 +44,16 @@ class ViewController: UIViewController, UserControlDelegate {
          print(curriculum!.skill[0].level)
         print(curriculum!.curriculumName)
         print(curriculum!.level)
+  
+        for project in user!.project {
+            if (project.ID == 48.0) {
+                print(project.name)
+            }
+            if (project.parentID == Double(48.0)) {
+                print(project.name)
+                print(project.mark)
+            }
+        }
        // print((user!.cursesUsers[0] as! NSDictionary).value(forKey: "cursus_id")!)
         // print(((user!.cursesUsers[1] as! NSDictionary).value(forKey: "cursus")! as! NSDictionary).value(forKey: "name")! as! String)
         //print(user!.)

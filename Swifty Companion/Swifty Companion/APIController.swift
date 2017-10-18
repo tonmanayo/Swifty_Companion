@@ -66,7 +66,7 @@ class APIController {
 				response in
                 
 				let json = JSON(response.data!).dictionaryObject
-               //print (json as Any)
+               print (json as Any)
                 let user = User(data: json as NSDictionary?)
                 let curriculum = Curriculum(data: user!.cursesUsers[0] as? NSDictionary)
               //  print (user?.login as Any)

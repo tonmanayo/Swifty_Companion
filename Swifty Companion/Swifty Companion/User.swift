@@ -9,6 +9,17 @@
 import UIKit
 
 struct User {
+    
+    struct Projects {
+        var name: String
+        var parentID: Double
+        var ID: Double
+        var curriculumID: Double
+        var mark: Double
+        var status: String
+        var validated: Double
+    }
+    
     let ID: Double
     let email: String
     let login: String
@@ -19,10 +30,12 @@ struct User {
     let mobileNumber: String
     let wallet: Double
     let correctionPoints: Double
-    //let campus: NSArray
     let campusName: String
     
+    var project: [Projects] = []
+    
     let cursesUsers: NSArray
+   // let userProjects: NSArray
 
     
     init? (data: NSDictionary?) {
@@ -48,7 +61,21 @@ struct User {
         let campus = data?.arrayForKeyPath("campus")
         let campusName = (campus![0] as? NSDictionary ?? nil)?.value(forKey: "name") as? String ?? ""
         
+        
         let cursesUsers = data?.arrayForKeyPath(IntraKey.cursusUsers)
+        let userProjects = data?.value(forKeyPath: IntraKey.userProjects) as! [NSDictionary]
+        
+        for var i in 0..<userProjects.count {
+            let tmpProject:Projects = Projects(name: (userProjects[i].value(forKeyPath: "project") as? NSDictionary ?? nil)?.value(forKeyPath: "name") as? String ?? "",
+                                               parentID: (userProjects[i].value(forKeyPath: "project") as? NSDictionary ?? nil)?.value(forKeyPath: "parent_id") as? Double ?? 0,
+                                               ID: (userProjects[i].value(forKeyPath: "project") as? NSDictionary ?? nil)?.value(forKeyPath: "id") as? Double ?? 0,
+                                               curriculumID: userProjects[i].value(forKeyPath: "cursus_ids") as? Double ?? 0,
+                                               mark: userProjects[i].value(forKeyPath: "final_mark") as? Double ?? 0,
+                                               status: userProjects[i].value(forKeyPath: "status") as? String ?? "",
+                                               validated: userProjects[i].value(forKeyPath: "validated?") as? Double ?? 0)
+            self.project.append(tmpProject)
+            i += 1
+        }
         
         self.ID = ID
         self.email = email
@@ -78,6 +105,7 @@ struct User {
         static let wallet = "wallet"
         static let cursusUsers = "cursus_users"
         static let correctionPoints = "correction_point"
+        static let userProjects = "projects_users"
     }
 }
 
