@@ -26,11 +26,20 @@ class ViewController: UIViewController, UserControlDelegate {
 		// Dispose of any resources that can be recreated.
 	}
 
-	@IBAction func Go(_ sender: Any) {
-		self.apiController?.getUserData("tmack")
+    @IBOutlet weak var progressBar: UIProgressView!
+    
+    @IBAction func Go(_ sender: Any) {
+		self.apiController?.getUserData("adippena")
 	}
+    
+    
 	
     func displayUserInfo(user: User?, curriculum: Curriculum?) {
+        
+        let x:Double = (curriculum?.level)!.truncatingRemainder(dividingBy: 1)
+        
+        print(x)
+        progressBar.progress = Float(x)
 		print(user!.login)
         print(user!.firstName)
         print(user!.lastName)
