@@ -9,5 +9,5 @@
 import Foundation
 
 protocol UserControlDelegate: class {
-    func displayUserInfo(user: User?, skills: Skills?)
+    func displayUserInfo(user: User?, curriculum: Curriculum?)
 }

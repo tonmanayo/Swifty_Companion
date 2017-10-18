@@ -19,6 +19,8 @@ struct User {
     let mobileNumber: String
     let wallet: Double
     let correctionPoints: Double
+    //let campus: NSArray
+    let campusName: String
     
     let cursesUsers: NSArray
 
@@ -43,6 +45,9 @@ struct User {
         let wallet =  data?.value(forKeyPath: IntraKey.wallet) as? Double ?? 0
         let correctionPoints =  data?.value(forKeyPath: IntraKey.correctionPoints) as? Double ?? 0
         
+        let campus = data?.arrayForKeyPath("campus")
+        let campusName = (campus![0] as? NSDictionary ?? nil)?.value(forKey: "name") as? String ?? ""
+        
         let cursesUsers = data?.arrayForKeyPath(IntraKey.cursusUsers)
         
         self.ID = ID
@@ -55,6 +60,7 @@ struct User {
         self.wallet = wallet
         self.correctionPoints = correctionPoints
         self.cursesUsers = cursesUsers!
+        self.campusName = campusName
         
         self.profilePicture = profilePicture
 
