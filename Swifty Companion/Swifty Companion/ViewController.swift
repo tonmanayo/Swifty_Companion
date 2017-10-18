@@ -41,9 +41,10 @@ class ViewController: UIViewController {
 		scrollStackView.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor, constant: 0).isActive = true
 		scrollStackView.widthAnchor.constraint(equalTo: scrollView.widthAnchor).isActive = true
 		
-		for x in 1...20 {
-			let sectionView: UIStackView = SectionComponent(title: String(x))
-			scrollStackView.addArrangedSubview(sectionView)
+		let data = [["title": "Info", "infoLabels": [["type": "Wallet", "value": "20"], ["type": "email", "value": "derp@derp.com"]]], ["title": "Projects", "projectLabels": [["name": "Project1", "date": "20-06-2017", "mark": "100%"], ["name": "Project2", "date": "12-09-2017", "mark": "99%"]]]]
+		
+		for element in data {
+			let _ = SectionComponent(values: element, container: scrollStackView)
 		}
 	}
 
