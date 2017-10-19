@@ -29,7 +29,7 @@ class ViewController: UIViewController, UserControlDelegate {
     @IBOutlet weak var progressBar: UIProgressView!
     
     @IBAction func Go(_ sender: Any) {
-		self.apiController?.getUserData("adippena")
+		self.apiController?.getUserData("tmack")
 	}
     
     
@@ -40,29 +40,29 @@ class ViewController: UIViewController, UserControlDelegate {
         
         print(x)
         progressBar.progress = Float(x)
-		print(user!.login)
-        print(user!.firstName)
-        print(user!.lastName)
-        print(user!.wallet)
-        print(user!.mobileNumber)
-        print(user!.email)
-        print(user!.correctionPoints)
-       // print((user!.cursesUsers[1]))
-        print(user!.campusName)
-        print(curriculum!.skill[0].name)
-         print(curriculum!.skill[0].level)
-        print(curriculum!.curriculumName)
-        print(curriculum!.level)
-  
-        for project in user!.project {
-            if (project.ID == 48.0) {
-                print(project.name)
-            }
-            if (project.parentID == Double(48.0)) {
-                print(project.name)
-                print(project.mark)
-            }
-        }
+//		print(user!.login)
+//        print(user!.firstName)
+//        print(user!.lastName)
+//        print(user!.wallet)
+//        print(user!.mobileNumber)
+//        print(user!.email)
+//        print(user!.correctionPoints)
+//       // print((user!.cursesUsers[1]))
+//        print(user!.campusName)
+//        print(curriculum!.skill[0].name)
+//         print(curriculum!.skill[0].level)
+//        print(curriculum!.curriculumName)
+//        print(curriculum!.level)
+//  
+//        for project in user!.project {
+//            if (project.ID == 48.0) {
+//                print(project.name)
+//            }
+//            if (project.parentID == Double(48.0)) {
+//                print(project.name)
+//                print(project.mark)
+//            }
+//        }
        // print((user!.cursesUsers[0] as! NSDictionary).value(forKey: "cursus_id")!)
         // print(((user!.cursesUsers[1] as! NSDictionary).value(forKey: "cursus")! as! NSDictionary).value(forKey: "name")! as! String)
         //print(user!.)
