@@ -44,11 +44,12 @@ class ViewController: UIViewController {
 		scrollStackView.widthAnchor.constraint(equalTo: scrollView.widthAnchor).isActive = true
 		
 		let data = [["title": "Info", "infoLabels": [["type": "Wallet", "value": "20"], ["type": "email", "value": "derp@derp.com"]]], ["title": "Projects", "projectLabels": [["name": "Project1", "date": "20-06-2017", "mark": "100%"], ["name": "Project2", "date": "12-09-2017", "mark": "99%"]]]]
-		for _ in 1...20 {
+		
+		let _ = UserComponent(values: data[0], container: scrollStackView)
+		
 			for element in data {
 				let _ = SectionComponent(values: element, container: scrollStackView)
 			}
-		}
 	}
 
 }
