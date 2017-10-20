@@ -9,22 +9,34 @@
 import UIKit
 import Alamofire
 
-class ViewController: UIViewController, UserControlDelegate {
+class ViewController: UIViewController, UserControlDelegate, UITableViewDelegate {
 	
 	var apiController : APIController?
+    
+    @IBOutlet weak var tableView: UITableView!
+    
+    let searchBar: UISearchBar = {
+        let searchBar = UISearchBar()
+        searchBar.translatesAutoresizingMaskIntoConstraints = false
+        return searchBar
+    }()
+    
+    
 	override func viewDidLoad() {
 		super.viewDidLoad()
 		
 		apiController = APIController.init(delegate: self)
-		// Do any additional setup after loading the view, typically from a nib.
-		
-		//apiController.getToken()
+        
+        view.addSubview(searchBar)
+        setupLayout()
 	}
 
+    
 	override func didReceiveMemoryWarning() {
 		super.didReceiveMemoryWarning()
 		// Dispose of any resources that can be recreated.
 	}
+    
 
     @IBOutlet weak var progressBar: UIProgressView!
     
@@ -33,7 +45,15 @@ class ViewController: UIViewController, UserControlDelegate {
 	}
     
     
-	
+    private func setupLayout () {
+        searchBar.topAnchor.constraint(equalTo: view.topAnchor, constant: 20).isActive = true
+        searchBar.leftAnchor.constraint(equalTo: view.leftAnchor).isActive = true
+        searchBar.rightAnchor.constraint(equalTo: view.rightAnchor).isActive = true
+        //searchBar.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: 0).isActive = true
+    }
+    
+    
+    
     func displayUserInfo(user: User?, curriculum: Curriculum?) {
         
         let x:Double = (curriculum?.level)!.truncatingRemainder(dividingBy: 1)

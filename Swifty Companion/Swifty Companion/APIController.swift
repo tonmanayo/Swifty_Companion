@@ -54,28 +54,40 @@ class APIController {
 			
 			print(response.request as Any)
 			
-			let json = JSON(response.data!).array
-			print(json as Any)
-			let userID = (json?.first?["id"].int!)!
-			
-			let DataURL = URL(string: "https://api.intra.42.fr/v2/users/\(String(userID))")!
-			var DataRequest = URLRequest(url: DataURL)
-			DataRequest.addValue("Bearer \(self.token!)", forHTTPHeaderField: "Authorization")
-			
+			let json = JSON(response.data!).arrayObject
+            var users: [SearchUsers] = []
+            for new in json! {
+                users.append(SearchUsers(data: (new as! NSDictionary))!)
+            }
+            
+            for user in users {
+                print(user.userLogin)
+            }
             
             
-			Alamofire.request(DataRequest).responseJSON(completionHandler: {
-				response in
-                
-				let json = JSON(response.data!).dictionaryObject
-            //   print (json as Any)
-                let user = User(data: json as NSDictionary?)
-                let curriculum = Curriculum(data: user!.cursesUsers[0] as? NSDictionary)
-              //  print (user?.login as Any)
-				
-                self.delegate?.displayUserInfo(user: user, curriculum: curriculum)
-			
-			})
+            
+            
+		//	print(json as Any)
+//			let userID = (json?.first?["id"].int!)!
+//			
+//			let DataURL = URL(string: "https://api.intra.42.fr/v2/users/\(String(userID))")!
+//			var DataRequest = URLRequest(url: DataURL)
+//			DataRequest.addValue("Bearer \(self.token!)", forHTTPHeaderField: "Authorization")
+//			
+//            
+//            
+//			Alamofire.request(DataRequest).responseJSON(completionHandler: {
+//				response in
+//                
+//				let json = JSON(response.data!).dictionaryObject
+//            //   print (json as Any)
+//                let user = User(data: json as NSDictionary?)
+//                let curriculum = Curriculum(data: user!.cursesUsers[0] as? NSDictionary)
+//              //  print (user?.login as Any)
+//				
+//                self.delegate?.displayUserInfo(user: user, curriculum: curriculum)
+//			
+//			})
 			
 		})
 	}
