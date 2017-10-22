@@ -19,6 +19,7 @@
 		FA7E73F71F9694CC008BD45A /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA7E73F61F9694CC008BD45A /* User.swift */; };
 		FA7E73F91F9694EA008BD45A /* Curriculum.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA7E73F81F9694EA008BD45A /* Curriculum.swift */; };
 		FA7E73FB1F969534008BD45A /* UserControlDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA7E73FA1F969534008BD45A /* UserControlDelegate.swift */; };
+		FAF276501F9D2E4100211341 /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAF2764F1F9D2E4100211341 /* ProfileViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -38,6 +39,7 @@
 		FA7E73F61F9694CC008BD45A /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		FA7E73F81F9694EA008BD45A /* Curriculum.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Curriculum.swift; sourceTree = "<group>"; };
 		FA7E73FA1F969534008BD45A /* UserControlDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserControlDelegate.swift; sourceTree = "<group>"; };
+		FAF2764F1F9D2E4100211341 /* ProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -85,6 +87,7 @@
 				0102C39F1F94C6530065E4D5 /* LaunchScreen.storyboard */,
 				0102C3A21F94C6530065E4D5 /* Info.plist */,
 				33EF69F61F9A1EBB00E1A9B0 /* SearchUsers.swift */,
+				FAF2764F1F9D2E4100211341 /* ProfileViewController.swift */,
 			);
 			path = "Swifty Companion";
 			sourceTree = "<group>";
@@ -243,6 +246,7 @@
 				0102C3991F94C6530065E4D5 /* ViewController.swift in Sources */,
 				33EF69F71F9A1EBB00E1A9B0 /* SearchUsers.swift in Sources */,
 				0102C3971F94C6530065E4D5 /* AppDelegate.swift in Sources */,
+				FAF276501F9D2E4100211341 /* ProfileViewController.swift in Sources */,
 				FA7E73F91F9694EA008BD45A /* Curriculum.swift in Sources */,
 				0102C3A91F94CDFD0065E4D5 /* APIController.swift in Sources */,
 			);
