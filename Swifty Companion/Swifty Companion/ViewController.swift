@@ -14,7 +14,7 @@ class ViewController: UIViewController, UserControlDelegate, UITableViewDelegate
 	var apiController : APIController?
     
     var userNames:[SearchUsers]? = []
-    var userData:NSDictionary = [:]
+    var userData:User = User()
     var user:String = ""
     var shouldShowSearchResults:Bool = false
     
@@ -39,9 +39,7 @@ class ViewController: UIViewController, UserControlDelegate, UITableViewDelegate
 		super.viewDidLoad()
 		
 		apiController = APIController.init(delegate: self)
-        
         configureSearchController()
-        
     }
     
     func updateSearchResults(for searchController: UISearchController) {
@@ -73,27 +71,6 @@ class ViewController: UIViewController, UserControlDelegate, UITableViewDelegate
         tableView.reloadData()
     }
     
-    @IBOutlet weak var progressBar: UIProgressView!
-    
-   
-    
-    @IBAction func Go(_ sender: Any) {
-        
-        self.apiController?.getUserNames(searchText: "tma")  {responseObject, error in
-            if (responseObject?.count == 0) {
-                print("No Users Found")
-                return
-            }
-            self.userNames = responseObject!
-            if (responseObject?.count == 1) {
-                self.user = responseObject![0].userLogin
-            }
-            for name in responseObject! {
-                print(name.userLogin)
-            }
-             self.tableView.reloadData()
-        }
-	}
     
     // MARK: - Table View
     func numberOfSections(in tableView: UITableView) -> Int {
@@ -101,21 +78,28 @@ class ViewController: UIViewController, UserControlDelegate, UITableViewDelegate
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        
         return (self.userNames?.count)!
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell     {
         let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath) as? CustomTableViewCell
         if (userNames?.isEmpty == false) {
-        print(self.userNames![indexPath.row].userLogin)
         cell?.lblUserName.text = self.userNames![indexPath.row].userLogin
     }
         return cell!
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        print("Row \(indexPath.row) selected")
+        self.apiController?.getUserData(loginID: self.userNames![indexPath.row].userID) {responseObject, error in
+            if (responseObject?.count == 0) {
+                print("No Users Found")
+                return
+            }
+            self.userData = User(data: responseObject as NSDictionary?)!
+            print(self.userData.campusName)
+        }
+        //self.userData = userNames![indexPath.row]
+     
     }
     
     
@@ -124,13 +108,7 @@ class ViewController: UIViewController, UserControlDelegate, UITableViewDelegate
         let x:Double = (curriculum?.level)!.truncatingRemainder(dividingBy: 1)
         
         print(x)
-        progressBar.progress = Float(x)
-        
-        
-     
-       
-        
-        
+
 //		print(user!.login)
 //        print(user!.firstName)
 //        print(user!.lastName)

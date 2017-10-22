@@ -21,30 +21,31 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <progressView opaque="NO" contentMode="scaleToFill" verticalHuggingPriority="750" fixedFrame="YES" translatesAutoresizingMaskIntoConstraints="NO" id="5s9-2V-fE7">
-                                <rect key="frame" x="44" y="17" width="281" height="3"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                            </progressView>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" fixedFrame="YES" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="87" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="z8A-Dl-COa">
-                                <rect key="frame" x="16" y="198" width="343" height="449"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="87" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="z8A-Dl-COa">
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <prototypes>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="Cell" rowHeight="87" id="rE3-ca-5a4" customClass="CustomTableViewCell" customModule="Swifty_Companion" customModuleProvider="target">
-                                        <rect key="frame" x="0.0" y="28" width="343" height="87"/>
+                                        <rect key="frame" x="0.0" y="28" width="375" height="87"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="rE3-ca-5a4" id="Zhe-TL-tT9">
-                                            <rect key="frame" x="0.0" y="0.0" width="343" height="86.5"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="86.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="VIj-yU-ldA">
-                                                    <rect key="frame" x="109" y="33" width="124" height="21"/>
-                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="VIj-yU-ldA">
+                                                    <rect key="frame" x="125" y="33" width="124" height="21"/>
+                                                    <constraints>
+                                                        <constraint firstAttribute="width" constant="124" id="nnq-wl-dMX"/>
+                                                    </constraints>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <nil key="textColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                             </subviews>
+                                            <constraints>
+                                                <constraint firstItem="VIj-yU-ldA" firstAttribute="centerX" secondItem="Zhe-TL-tT9" secondAttribute="centerX" id="NiJ-CB-sXV"/>
+                                                <constraint firstItem="VIj-yU-ldA" firstAttribute="centerY" secondItem="Zhe-TL-tT9" secondAttribute="centerY" id="TYp-xN-w0f"/>
+                                            </constraints>
                                         </tableViewCellContentView>
                                         <connections>
                                             <outlet property="lblUserName" destination="VIj-yU-ldA" id="q2W-Wh-B5j"/>
@@ -57,19 +58,16 @@
                                     <outlet property="delegate" destination="BYZ-38-t0r" id="TKk-oq-civ"/>
                                 </connections>
                             </tableView>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="C72-n4-hrb">
-                                <rect key="frame" x="130" y="120" width="108" height="42"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <state key="normal" title="Button"/>
-                                <connections>
-                                    <action selector="Go:" destination="BYZ-38-t0r" eventType="touchUpInside" id="qx2-rb-EMI"/>
-                                </connections>
-                            </button>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <constraints>
+                            <constraint firstItem="z8A-Dl-COa" firstAttribute="top" secondItem="8bC-Xf-vdC" secondAttribute="top" id="PJO-db-Dwg"/>
+                            <constraint firstItem="z8A-Dl-COa" firstAttribute="bottom" secondItem="wfy-db-euE" secondAttribute="top" id="eBV-Xe-fsj"/>
+                            <constraint firstAttribute="trailing" secondItem="z8A-Dl-COa" secondAttribute="trailing" id="il3-qF-gTa"/>
+                            <constraint firstItem="z8A-Dl-COa" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" id="nVS-Zq-LKi"/>
+                        </constraints>
                     </view>
                     <connections>
-                        <outlet property="progressBar" destination="5s9-2V-fE7" id="9Dx-2M-YI2"/>
                         <outlet property="tableView" destination="z8A-Dl-COa" id="RLv-CF-4PM"/>
                     </connections>
                 </viewController>

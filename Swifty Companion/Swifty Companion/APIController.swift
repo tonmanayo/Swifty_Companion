@@ -36,7 +36,6 @@ class APIController {
 			
 			let json = JSON(data: response.data!)
 			self.token = json["access_token"].string
-
 		})
 	}
     
@@ -45,7 +44,6 @@ class APIController {
         var IdRequest = URLRequest(url: IdURL)
           if (self.token?.isEmpty == false) {
             IdRequest.addValue("Bearer \(self.token!)", forHTTPHeaderField: "Authorization")
-          
             Alamofire.request(IdRequest).responseJSON(completionHandler: {
                 response in
                 switch response.result {
@@ -67,24 +65,28 @@ class APIController {
         userNamesRequest(login: searchText, completionHandler: completionHandler)
     }
 	
-//    func getUserData(_ login: String) {
-//
-//        let DataURL = URL(string: "https://api.intra.42.fr/v2/users/\(login)")!
-//        var DataRequest = URLRequest(url: DataURL)
-//        DataRequest.addValue("Bearer \(self.token!)", forHTTPHeaderField: "Authorization")
-//
-//        Alamofire.request(DataRequest).responseJSON(completionHandler: {
-//            response in
-//
-//            let json = JSON(response.data!).dictionaryObject
-//        //   print (json as Any)
-//            let user = User(data: json as NSDictionary?)
-//            let curriculum = Curriculum(data: user!.cursesUsers[0] as? NSDictionary)
-//          //  print (user?.login as Any)
-//
-//            self.delegate?.getUserInfo(user: user, curriculum: curriculum)
-//
-//        })
-//    }
+    func userDataRequest(loginID: Double, completionHandler: @escaping ([String : Any]?, Error?) -> ()) {
+
+        let DataURL = URL(string: "https://api.intra.42.fr/v2/users/\(String(format: "%.0f", loginID))")!
+        var DataRequest = URLRequest(url: DataURL)
+        DataRequest.addValue("Bearer \(self.token!)", forHTTPHeaderField: "Authorization")
+
+        Alamofire.request(DataRequest).responseJSON(completionHandler: {
+            response in
+            switch response.result {
+            case .success(let value):
+                let json = JSON(value).dictionaryObject
+                //let user = User(data: json as NSDictionary?)
+                completionHandler(json, nil)
+            case .failure(let error):
+                completionHandler(nil, error)
+            }
+           // let curriculum = Curriculum(data: user!.cursesUsers[0] as? NSDictionary)
+        })
+    }
+    
+    func getUserData(loginID:Double, completionHandler: @escaping ([String : Any]?, Error?) -> ()) {
+        userDataRequest(loginID: loginID, completionHandler: completionHandler)
+    }
 	
 }
