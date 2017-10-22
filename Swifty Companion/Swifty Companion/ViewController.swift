@@ -15,8 +15,8 @@ class ViewController: UIViewController, UserControlDelegate, UITableViewDelegate
     
     var userNames:[SearchUsers]? = []
     var userData:User? = User()
-    var user:String = ""
     var shouldShowSearchResults:Bool = false
+    var userIndex:Int = 0
     
     @IBOutlet weak var tableView: UITableView!
 
@@ -52,13 +52,13 @@ class ViewController: UIViewController, UserControlDelegate, UITableViewDelegate
                         return
                     }
                     self?.userNames = responseObject!
-                    if (responseObject?.count == 1) {
-                        self?.user = responseObject![0].userLogin
-                    }
                     for name in responseObject! {
                         print(name.userLogin)
                     }
-                    self?.tableView.reloadData()
+                    DispatchQueue.main.async {
+                         self?.tableView.reloadData()
+                    }
+                   
                 }
             }
         }
@@ -94,20 +94,25 @@ class ViewController: UIViewController, UserControlDelegate, UITableViewDelegate
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let test:Double? = self.userNames![indexPath.row].userID
-        if let userIndex = test {
-                self.apiController?.getUserData(loginID: self.userNames![indexPath.row].userID) {[weak self] responseObject, error in
-                if (self?.userNames![indexPath.row].userID == userIndex) {
+        userIndex = indexPath.row
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        userIndex = (tableView.indexPathForSelectedRow?.row)!
+        if let profileViewController = segue.destination.contents as? ProfileViewController {
+            print(userIndex)
+            self.apiController?.getUserData(loginID: self.userNames![userIndex].userID) {[weak self] responseObject, error in
                     if (responseObject?.count == 0) {
                         print("No Users Found")
                         return
                     }
                     self?.userData = User(data: responseObject as NSDictionary?)!
-                        print(self?.userData?.campusName ?? "")
+                    print(self?.userData?.campusName ?? "")
+                    profileViewController.profilePicURL = self?.userData?.profilePicture
+                    profileViewController.title = self?.userData?.login
                 }
             }
         }
-    }
     
     
     func displayUserInfo(user: User?, curriculum: Curriculum?) {
@@ -145,5 +150,15 @@ class ViewController: UIViewController, UserControlDelegate, UITableViewDelegate
         ///todo ill finish the api tomorrow
         
 	}
+}
+
+extension UIViewController {
+    var contents: UIViewController {
+        if let navcon = self as? UINavigationController {
+            return navcon.visibleViewController ?? self
+        } else {
+            return self
+        }
+    }
 }
 

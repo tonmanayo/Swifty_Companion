@@ -10,8 +10,5 @@ import UIKit
 
 class CustomTableViewCell: UITableViewCell {
 
-   
     @IBOutlet var lblUserName: UILabel!
-    
-
 }
