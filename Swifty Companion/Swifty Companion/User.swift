@@ -37,7 +37,20 @@ struct User {
     let cursesUsers: NSArray
    // let userProjects: NSArray
 
-    
+    init (){
+        self.ID = 0
+        self.email = ""
+        self.login = ""
+        self.firstName = ""
+        self.lastName = ""
+        self.url = nil
+        self.mobileNumber = ""
+        self.wallet = 0
+        self.correctionPoints = 0
+        self.cursesUsers = []
+        self.campusName = ""
+        self.profilePicture = nil
+    }
     init? (data: NSDictionary?) {
         guard
             let ID = data?.value(forKeyPath: IntraKey.ID) as? Double,
