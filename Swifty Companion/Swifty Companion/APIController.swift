@@ -39,57 +39,52 @@ class APIController {
 
 		})
 	}
+    
+    func userNamesRequest(login: String, completionHandler: @escaping ([SearchUsers]?, Error?) -> ()) {
+        let IdURL = URL(string: "https://api.intra.42.fr/v2/users?search[login]=\(login)")!
+        var IdRequest = URLRequest(url: IdURL)
+          if (self.token?.isEmpty == false) {
+            IdRequest.addValue("Bearer \(self.token!)", forHTTPHeaderField: "Authorization")
+          
+            Alamofire.request(IdRequest).responseJSON(completionHandler: {
+                response in
+                switch response.result {
+                case .success(let value):
+                    let json = JSON(value).arrayObject
+                    var users: [SearchUsers] = []
+                    for new in json! {
+                        users.append(SearchUsers(data: (new as! NSDictionary))!)
+                    }
+                    completionHandler(users, nil)
+                case .failure(let error):
+                    completionHandler(nil, error)
+                }
+            })
+        }
+    }
+    
+    func getUserNames(searchText:String, completionHandler: @escaping ([SearchUsers]?, Error?) -> ()) {
+        userNamesRequest(login: searchText, completionHandler: completionHandler)
+    }
 	
-	func getUserData(_ login: String) {
-		//let IdURL = URL(string: "https://api.intra.42.fr/v2/users?filter[login]=\(login.lowercased())")!
-        let IdURL = URL(string: "https://api.intra.42.fr/v2/users?search[login]=tma")!
-
-		var IdRequest = URLRequest(url: IdURL)
-	//	print(self.token!)
-		IdRequest.addValue("Bearer \(self.token!)", forHTTPHeaderField: "Authorization")
-	//	print(IdURL)
-		
-		Alamofire.request(IdRequest).responseJSON(completionHandler: {
-			response in
-			
-			print(response.request as Any)
-			
-			let json = JSON(response.data!).arrayObject
-            var users: [SearchUsers] = []
-            for new in json! {
-                users.append(SearchUsers(data: (new as! NSDictionary))!)
-            }
-            
-            for user in users {
-                print(user.userLogin)
-            }
-            
-            
-            
-            
-		//	print(json as Any)
-//			let userID = (json?.first?["id"].int!)!
-//			
-//			let DataURL = URL(string: "https://api.intra.42.fr/v2/users/\(String(userID))")!
-//			var DataRequest = URLRequest(url: DataURL)
-//			DataRequest.addValue("Bearer \(self.token!)", forHTTPHeaderField: "Authorization")
-//			
-//            
-//            
-//			Alamofire.request(DataRequest).responseJSON(completionHandler: {
-//				response in
-//                
-//				let json = JSON(response.data!).dictionaryObject
-//            //   print (json as Any)
-//                let user = User(data: json as NSDictionary?)
-//                let curriculum = Curriculum(data: user!.cursesUsers[0] as? NSDictionary)
-//              //  print (user?.login as Any)
-//				
-//                self.delegate?.displayUserInfo(user: user, curriculum: curriculum)
-//			
-//			})
-			
-		})
-	}
+//    func getUserData(_ login: String) {
+//
+//        let DataURL = URL(string: "https://api.intra.42.fr/v2/users/\(login)")!
+//        var DataRequest = URLRequest(url: DataURL)
+//        DataRequest.addValue("Bearer \(self.token!)", forHTTPHeaderField: "Authorization")
+//
+//        Alamofire.request(DataRequest).responseJSON(completionHandler: {
+//            response in
+//
+//            let json = JSON(response.data!).dictionaryObject
+//        //   print (json as Any)
+//            let user = User(data: json as NSDictionary?)
+//            let curriculum = Curriculum(data: user!.cursesUsers[0] as? NSDictionary)
+//          //  print (user?.login as Any)
+//
+//            self.delegate?.getUserInfo(user: user, curriculum: curriculum)
+//
+//        })
+//    }
 	
 }

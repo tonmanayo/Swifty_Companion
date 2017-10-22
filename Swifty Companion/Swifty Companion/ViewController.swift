@@ -9,49 +9,114 @@
 import UIKit
 import Alamofire
 
-class ViewController: UIViewController, UserControlDelegate, UITableViewDelegate {
-	
+class ViewController: UIViewController, UserControlDelegate, UITableViewDelegate, UITableViewDataSource, UISearchResultsUpdating, UISearchBarDelegate{
+
 	var apiController : APIController?
     
-    @IBOutlet weak var tableView: UITableView!
+    var userNames:[SearchUsers]? = []
+    var userData:NSDictionary = [:]
+    var user:String = ""
+    var shouldShowSearchResults:Bool = false
     
-    let searchBar: UISearchBar = {
-        let searchBar = UISearchBar()
-        searchBar.translatesAutoresizingMaskIntoConstraints = false
-        return searchBar
+    @IBOutlet weak var tableView: UITableView!
+
+    let searchController: UISearchController = {
+        let searchController = UISearchController(searchResultsController: nil)
+        //searchController.searchBar.translatesAutoresizingMaskIntoConstraints = false
+        return searchController
     }()
     
+    func configureSearchController() {
+        searchController.dimsBackgroundDuringPresentation = false
+        searchController.searchBar.placeholder = "Enter Username"
+        searchController.searchBar.delegate = self
+        searchController.searchResultsUpdater = self
+        searchController.searchBar.sizeToFit()
+        self.tableView.tableHeaderView = searchController.searchBar
+    }
     
 	override func viewDidLoad() {
 		super.viewDidLoad()
 		
 		apiController = APIController.init(delegate: self)
         
-        view.addSubview(searchBar)
-        setupLayout()
-	}
-
-    
-	override func didReceiveMemoryWarning() {
-		super.didReceiveMemoryWarning()
-		// Dispose of any resources that can be recreated.
-	}
-    
-
-    @IBOutlet weak var progressBar: UIProgressView!
-    
-    @IBAction func Go(_ sender: Any) {
-		self.apiController?.getUserData("tmack")
-	}
-    
-    
-    private func setupLayout () {
-        searchBar.topAnchor.constraint(equalTo: view.topAnchor, constant: 20).isActive = true
-        searchBar.leftAnchor.constraint(equalTo: view.leftAnchor).isActive = true
-        searchBar.rightAnchor.constraint(equalTo: view.rightAnchor).isActive = true
-        //searchBar.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: 0).isActive = true
+        configureSearchController()
+        
     }
     
+    func updateSearchResults(for searchController: UISearchController) {
+        // If we haven't typed anything into the search bar then do not filter the results
+        self.apiController?.getUserNames(searchText: searchController.searchBar.text!)  {responseObject, error in
+            if (responseObject?.count == 0) {
+                print("No Users Found")
+                return
+            }
+            self.userNames = responseObject!
+            if (responseObject?.count == 1) {
+                self.user = responseObject![0].userLogin
+            }
+            for name in responseObject! {
+                print(name.userLogin)
+            }
+            self.tableView.reloadData()
+        }
+    }
+    
+    public func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
+        shouldShowSearchResults = true
+        tableView.reloadData()
+    }
+    
+    
+    public func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
+        shouldShowSearchResults = false
+        tableView.reloadData()
+    }
+    
+    @IBOutlet weak var progressBar: UIProgressView!
+    
+   
+    
+    @IBAction func Go(_ sender: Any) {
+        
+        self.apiController?.getUserNames(searchText: "tma")  {responseObject, error in
+            if (responseObject?.count == 0) {
+                print("No Users Found")
+                return
+            }
+            self.userNames = responseObject!
+            if (responseObject?.count == 1) {
+                self.user = responseObject![0].userLogin
+            }
+            for name in responseObject! {
+                print(name.userLogin)
+            }
+             self.tableView.reloadData()
+        }
+	}
+    
+    // MARK: - Table View
+    func numberOfSections(in tableView: UITableView) -> Int {
+        return 1
+    }
+    
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        
+        return (self.userNames?.count)!
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell     {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath) as? CustomTableViewCell
+        if (userNames?.isEmpty == false) {
+        print(self.userNames![indexPath.row].userLogin)
+        cell?.lblUserName.text = self.userNames![indexPath.row].userLogin
+    }
+        return cell!
+    }
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        print("Row \(indexPath.row) selected")
+    }
     
     
     func displayUserInfo(user: User?, curriculum: Curriculum?) {
@@ -60,6 +125,12 @@ class ViewController: UIViewController, UserControlDelegate, UITableViewDelegate
         
         print(x)
         progressBar.progress = Float(x)
+        
+        
+     
+       
+        
+        
 //		print(user!.login)
 //        print(user!.firstName)
 //        print(user!.lastName)
@@ -89,5 +160,5 @@ class ViewController: UIViewController, UserControlDelegate, UITableViewDelegate
         ///todo ill finish the api tomorrow
         
 	}
-
 }
+

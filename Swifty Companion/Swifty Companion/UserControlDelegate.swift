@@ -9,5 +9,6 @@
 import Foundation
 
 protocol UserControlDelegate: class {
-    func displayUserInfo(user: User?, curriculum: Curriculum?)
+    //func getUserInfo(user: User?, curriculum: Curriculum?)
+    //func getUsers(searchUsers: [SearchUsers]?)
 }
