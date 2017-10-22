@@ -14,7 +14,7 @@ class ViewController: UIViewController, UserControlDelegate, UITableViewDelegate
 	var apiController : APIController?
     
     var userNames:[SearchUsers]? = []
-    var userData:User = User()
+    var userData:User? = User()
     var user:String = ""
     var shouldShowSearchResults:Bool = false
     
@@ -44,19 +44,23 @@ class ViewController: UIViewController, UserControlDelegate, UITableViewDelegate
     
     func updateSearchResults(for searchController: UISearchController) {
         // If we haven't typed anything into the search bar then do not filter the results
-        self.apiController?.getUserNames(searchText: searchController.searchBar.text!)  {responseObject, error in
-            if (responseObject?.count == 0) {
-                print("No Users Found")
-                return
+        if let searchText = searchController.searchBar.text {
+            self.apiController?.getUserNames(searchText: searchController.searchBar.text!)  {[weak self] responseObject, error in
+                if (searchText == searchController.searchBar.text) {
+                    if (responseObject?.count == 0) {
+                        print("No Users Found")
+                        return
+                    }
+                    self?.userNames = responseObject!
+                    if (responseObject?.count == 1) {
+                        self?.user = responseObject![0].userLogin
+                    }
+                    for name in responseObject! {
+                        print(name.userLogin)
+                    }
+                    self?.tableView.reloadData()
+                }
             }
-            self.userNames = responseObject!
-            if (responseObject?.count == 1) {
-                self.user = responseObject![0].userLogin
-            }
-            for name in responseObject! {
-                print(name.userLogin)
-            }
-            self.tableView.reloadData()
         }
     }
     
@@ -90,16 +94,19 @@ class ViewController: UIViewController, UserControlDelegate, UITableViewDelegate
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        self.apiController?.getUserData(loginID: self.userNames![indexPath.row].userID) {responseObject, error in
-            if (responseObject?.count == 0) {
-                print("No Users Found")
-                return
+        let test:Double? = self.userNames![indexPath.row].userID
+        if let userIndex = test {
+                self.apiController?.getUserData(loginID: self.userNames![indexPath.row].userID) {[weak self] responseObject, error in
+                if (self?.userNames![indexPath.row].userID == userIndex) {
+                    if (responseObject?.count == 0) {
+                        print("No Users Found")
+                        return
+                    }
+                    self?.userData = User(data: responseObject as NSDictionary?)!
+                        print(self?.userData?.campusName ?? "")
+                }
             }
-            self.userData = User(data: responseObject as NSDictionary?)!
-            print(self.userData.campusName)
         }
-        //self.userData = userNames![indexPath.row]
-     
     }
     
     
