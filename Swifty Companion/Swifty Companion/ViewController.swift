@@ -9,7 +9,8 @@
 import UIKit
 import Alamofire
 
-class ViewController: UIViewController, UserControlDelegate, UITableViewDelegate, UITableViewDataSource, UISearchResultsUpdating, UISearchBarDelegate{
+class ViewController: UIViewController, UserControlDelegate, UITableViewDelegate, UITableViewDataSource, UISearchResultsUpdating, UISearchBarDelegate, UISplitViewControllerDelegate{
+    
 
 	var apiController : APIController?
     
@@ -19,6 +20,24 @@ class ViewController: UIViewController, UserControlDelegate, UITableViewDelegate
     var userIndex:Int = 0
     
     @IBOutlet weak var tableView: UITableView!
+    
+    override func awakeFromNib() {
+        super.awakeFromNib()
+        self.splitViewController?.delegate = self
+    }
+    
+    func splitViewController(
+        _ splitViewController: UISplitViewController,
+        collapseSecondary secondaryViewController: UIViewController,
+        onto primaryViewController: UIViewController) -> Bool
+    {
+        if primaryViewController.contents == self,
+            let ivc = secondaryViewController.contents as? ProfileViewController
+        {
+            return ivc.profilePicURL == nil
+        }
+        return false
+    }
 
     let searchController: UISearchController = {
         let searchController = UISearchController(searchResultsController: nil)
@@ -107,9 +126,13 @@ class ViewController: UIViewController, UserControlDelegate, UITableViewDelegate
                         return
                     }
                     self?.userData = User(data: responseObject as NSDictionary?)!
-                    print(self?.userData?.campusName ?? "")
+                    print(self?.userData?.profilePicture as Any)
+                if (self?.userData?.profilePicture?.absoluteString == "https://cdn.intra.42.fr/images/default.png") {
+                    profileViewController.profilePicURL =  URL(string: "http://clipart-library.com/image_gallery/267356.png")
+                } else {
                     profileViewController.profilePicURL = self?.userData?.profilePicture
-                    profileViewController.title = self?.userData?.login
+                }
+                profileViewController.title = self?.userData?.login
                 }
             }
         }
