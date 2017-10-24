@@ -62,7 +62,6 @@ class ViewController: UIViewController, UserControlDelegate, UITableViewDelegate
     }
     
     func updateSearchResults(for searchController: UISearchController) {
-        // If we haven't typed anything into the search bar then do not filter the results
         if let searchText = searchController.searchBar.text {
             self.apiController?.getUserNames(searchText: searchController.searchBar.text!)  {[weak self] responseObject, error in
                 if (searchText == searchController.searchBar.text) {
@@ -77,7 +76,6 @@ class ViewController: UIViewController, UserControlDelegate, UITableViewDelegate
                     DispatchQueue.main.async {
                          self?.tableView.reloadData()
                     }
-                   
                 }
             }
         }
@@ -119,23 +117,21 @@ class ViewController: UIViewController, UserControlDelegate, UITableViewDelegate
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         userIndex = (tableView.indexPathForSelectedRow?.row)!
         if let profileViewController = segue.destination.contents as? ProfileViewController {
-            print(userIndex)
             self.apiController?.getUserData(loginID: self.userNames![userIndex].userID) {[weak self] responseObject, error in
                     if (responseObject?.count == 0) {
                         print("No Users Found")
                         return
                     }
-                    self?.userData = User(data: responseObject as NSDictionary?)!
-                    print(self?.userData?.profilePicture as Any)
+                self?.userData = User(data: responseObject as NSDictionary?)!
+                profileViewController.userData = self?.userData
                 if (self?.userData?.profilePicture?.absoluteString == "https://cdn.intra.42.fr/images/default.png") {
                     profileViewController.profilePicURL =  URL(string: "http://clipart-library.com/image_gallery/267356.png")
                 } else {
                     profileViewController.profilePicURL = self?.userData?.profilePicture
                 }
-                profileViewController.title = self?.userData?.login
-                }
             }
         }
+    }
     
     
     func displayUserInfo(user: User?, curriculum: Curriculum?) {
