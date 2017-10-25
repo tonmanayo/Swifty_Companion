@@ -14,6 +14,8 @@ class ProfileViewController: UIViewController {
     
     @IBOutlet var loading: UIActivityIndicatorView!
     @IBOutlet var profilePicView: UIImageView!
+    @IBOutlet var lblCorrrectionPoints: UILabel!
+    @IBOutlet var lblWallet: UILabel!
     
     private var profilePic: UIImage? {
         get {
@@ -43,6 +45,9 @@ class ProfileViewController: UIViewController {
     var userData:User? {
         didSet {
             self.lblNameSurname.text = (userData?.firstName)! + " " + (userData?.lastName)!
+            self.lblWallet.text = "Wallet: " + String(format: "%.0f", (userData?.wallet)!)
+            self.lblCorrrectionPoints.text = "Correction points: " + String(format: "%.0f", (userData?.correctionPoints)!)
+
         }
     }
     

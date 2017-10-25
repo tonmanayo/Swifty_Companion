@@ -26,7 +26,7 @@ struct User {
     let firstName: String
     let lastName: String
     let url: URL?
-    let profilePicture: URL? //not done
+    let profilePicture: URL?
     let mobileNumber: String
     let wallet: Double
     let correctionPoints: Double
