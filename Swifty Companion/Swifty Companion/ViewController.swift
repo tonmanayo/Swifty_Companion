@@ -56,7 +56,7 @@ class ViewController: UIViewController, UserControlDelegate, UITableViewDelegate
     
 	override func viewDidLoad() {
 		super.viewDidLoad()
-		
+  
 		apiController = APIController.init(delegate: self)
         configureSearchController()
     }

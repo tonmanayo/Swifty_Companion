@@ -12,12 +12,31 @@ class ProfileViewController: UIViewController, UICollectionViewDelegateFlowLayou
 
     @IBOutlet var lblNameSurname: UILabel!
     
-    @IBOutlet var loading: UIActivityIndicatorView!
-    @IBOutlet var profilePicView: UIImageView!
+    //var loading: UIActivityIndicatorView!
+  
     //@IBOutlet var lblCorrrectionPoints: UILabel!
     //@IBOutlet var lblWallet: UILabel!
     
     var collectionView: UICollectionView!
+    
+    var profilePicView = UIImageView(image: #imageLiteral(resourceName: "loading"))
+    
+    let coverImage: UIImageView = {
+        let coverView = UIImageView(image: #imageLiteral(resourceName: "code-guide-callout"))
+        coverView.translatesAutoresizingMaskIntoConstraints = false
+        return coverView
+    }()
+    
+    private var profilePic: UIImage? {
+        get {
+            return profilePicView.image
+        }
+        set {
+            // loading?.stopAnimating()
+            profilePicView.image = newValue
+        }
+    }
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -25,12 +44,38 @@ class ProfileViewController: UIViewController, UICollectionViewDelegateFlowLayou
         layout.sectionInset = UIEdgeInsets(top: 20, left: 10, bottom: 10, right: 10)
         layout.itemSize = CGSize(width: 90, height: 120)
         
+        
+        
         collectionView = UICollectionView(frame: self.view.frame, collectionViewLayout: layout)
         collectionView.dataSource = self
         collectionView.delegate = self
         collectionView.register(UICollectionViewCell.self, forCellWithReuseIdentifier: "cell")
         collectionView.backgroundColor = UIColor.white
-        self.view.addSubview(collectionView)
+       // self.view.addSubview(collectionView)
+        view.addSubview(coverImage)
+        view.addSubview(profilePicView)
+        
+        
+        profilePicView.translatesAutoresizingMaskIntoConstraints = false
+
+        setupLayout()
+        
+    }
+    
+    private func setupLayout(){
+        
+        
+        
+        coverImage.topAnchor.constraint(equalTo: view.topAnchor, constant: 50).isActive = true
+        coverImage.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+        coverImage.widthAnchor.constraint(equalToConstant: self.view.frame.width).isActive = true
+        coverImage.heightAnchor.constraint(equalToConstant: self.view.frame.width / 2).isActive = true
+        
+        profilePicView.topAnchor.constraint(equalTo: coverImage.bottomAnchor, constant: -coverImage.frame.height).isActive = true
+        profilePicView.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+        profilePicView.widthAnchor.constraint(equalToConstant: 200).isActive = true
+        profilePicView.heightAnchor.constraint(equalToConstant: 200).isActive = true
+        
     }
     
     // MARK: - UICollectionViewDataSource protocol
@@ -56,15 +101,7 @@ class ProfileViewController: UIViewController, UICollectionViewDelegateFlowLayou
     
     
     // MARK - IMAGE
-    private var profilePic: UIImage? {
-        get {
-            return profilePicView.image
-        }
-        set {
-            loading?.stopAnimating()
-            profilePicView.image = newValue
-        }
-    }
+ 
     
   
     
@@ -92,7 +129,7 @@ class ProfileViewController: UIViewController, UICollectionViewDelegateFlowLayou
     
     private func fetchProfilePic() {
         if let url = profilePicURL {
-            loading.startAnimating()
+         //   loading.startAnimating()
             DispatchQueue.global(qos: .userInitiated).async {  [weak self] in
                 let urlContent = try? Data(contentsOf: url)
                 if let imageData = urlContent, self?.profilePicURL == url {
