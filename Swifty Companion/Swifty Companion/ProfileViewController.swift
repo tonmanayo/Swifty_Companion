@@ -10,9 +10,12 @@ import UIKit
 
 class ProfileViewController: UIViewController {
 
-
+    @IBOutlet var lblNameSurname: UILabel!
+    
     @IBOutlet var loading: UIActivityIndicatorView!
     @IBOutlet var profilePicView: UIImageView!
+    @IBOutlet var lblCorrrectionPoints: UILabel!
+    @IBOutlet var lblWallet: UILabel!
     
     private var profilePic: UIImage? {
         get {
@@ -21,8 +24,11 @@ class ProfileViewController: UIViewController {
         set {
             loading?.stopAnimating()
             profilePicView.image = newValue
-            profilePicView.sizeToFit()
         }
+    }
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
     }
     
     var profilePicURL:URL? {
@@ -33,6 +39,18 @@ class ProfileViewController: UIViewController {
             }
         }
     }
+    
+  
+    
+    var userData:User? {
+        didSet {
+            self.lblNameSurname.text = (userData?.firstName)! + " " + (userData?.lastName)!
+            self.lblWallet.text = "Wallet: " + String(format: "%.0f", (userData?.wallet)!)
+            self.lblCorrrectionPoints.text = "Correction points: " + String(format: "%.0f", (userData?.correctionPoints)!)
+
+        }
+    }
+    
     
     private func fetchProfilePic() {
         if let url = profilePicURL {
@@ -48,15 +66,4 @@ class ProfileViewController: UIViewController {
             
         }
     }
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
-    }
-    */
-
 }
