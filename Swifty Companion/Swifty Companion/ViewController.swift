@@ -41,6 +41,9 @@ class ViewController: UIViewController, UserControlDelegate, UITableViewDelegate
 
     let searchController: UISearchController = {
         let searchController = UISearchController(searchResultsController: nil)
+       
+        searchController.searchBar.barTintColor = UIColor(red: 206 / 255, green: 255 / 255, blue: 255 / 255, alpha: 1)
+
         //searchController.searchBar.translatesAutoresizingMaskIntoConstraints = false
         return searchController
     }()
@@ -56,10 +59,14 @@ class ViewController: UIViewController, UserControlDelegate, UITableViewDelegate
     
 	override func viewDidLoad() {
 		super.viewDidLoad()
-  
+        navigationItem.title = "Search for username"
+        UINavigationBar.appearance().backgroundColor = UIColor(red: 2 / 255, green: 174 / 255, blue: 233 / 255, alpha: 1)
+        
 		apiController = APIController.init(delegate: self)
         configureSearchController()
     }
+    
+    
     
     func updateSearchResults(for searchController: UISearchController) {
         if let searchText = searchController.searchBar.text {
@@ -112,6 +119,9 @@ class ViewController: UIViewController, UserControlDelegate, UITableViewDelegate
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         userIndex = indexPath.row
+        //searchController.searchBar.isHidden = true
+        searchController.isActive = false
+        
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {

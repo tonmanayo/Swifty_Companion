@@ -11,8 +11,23 @@ import UIKit
 class ProfileViewController: UIViewController, UICollectionViewDelegateFlowLayout, UICollectionViewDataSource {
 
     
+    var userData:User? {
+        didSet {
+            navigationItem.title = userData?.login
+            profilePicURL = userData?.url
+            lblNameSurname.text = (userData?.firstName)! + " " + (userData?.lastName)!
+            lblWallet.text = "Wallet: " + String(format: "%.0f", (userData?.wallet)!)
+            lblCorrectionPoints.text = "Correction points: " + String(format: "%.0f", (userData?.correctionPoints)!)
+        }
+    }
     
-    //var loading: UIActivityIndicatorView!
+    let loading :UIActivityIndicatorView = {
+        let activityIndicator = UIActivityIndicatorView(activityIndicatorStyle: UIActivityIndicatorViewStyle.gray)
+        activityIndicator.hidesWhenStopped = true
+        activityIndicator.translatesAutoresizingMaskIntoConstraints = false
+        activityIndicator.color = UIColor.blue
+        return activityIndicator
+    }()
     
     var collectionView: UICollectionView!
     
@@ -40,13 +55,17 @@ class ProfileViewController: UIViewController, UICollectionViewDelegateFlowLayou
     let profilePicView: UIImageView = {
         let imageView = UIImageView(image: #imageLiteral(resourceName: "loading"))
         imageView.translatesAutoresizingMaskIntoConstraints = false
-        imageView.contentMode = .scaleAspectFit
+        imageView.contentMode = .scaleAspectFill
+        imageView.layer.masksToBounds = true
         return imageView
     }()
     
     let coverImage: UIImageView = {
         let coverView = UIImageView(image: #imageLiteral(resourceName: "code-guide-callout"))
         coverView.translatesAutoresizingMaskIntoConstraints = false
+        coverView.contentMode = .scaleAspectFill
+        coverView.layer.masksToBounds = true
+        
         return coverView
     }()
     
@@ -55,6 +74,8 @@ class ProfileViewController: UIViewController, UICollectionViewDelegateFlowLayou
         nameSurname.textAlignment = .center
         nameSurname.text = "userName"
         nameSurname.font = UIFont.boldSystemFont(ofSize: 20)
+        nameSurname.adjustsFontSizeToFitWidth = true
+        nameSurname.minimumScaleFactor = 0.5
         nameSurname.translatesAutoresizingMaskIntoConstraints = false
         return nameSurname
     }()
@@ -64,10 +85,23 @@ class ProfileViewController: UIViewController, UICollectionViewDelegateFlowLayou
             return profilePicView.image
         }
         set {
-            // loading?.stopAnimating()
+            loading.stopAnimating()
             profilePicView.image = newValue
         }
     }
+    
+    let topContainter: UIView = {
+        let view = UIView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        return view
+    }()
+
+    
+    let menuBar: MenuBar = {
+        let mb = MenuBar()
+        mb.translatesAutoresizingMaskIntoConstraints = false
+        return mb
+    }()
     
     
     override func viewDidLoad() {
@@ -75,18 +109,12 @@ class ProfileViewController: UIViewController, UICollectionViewDelegateFlowLayou
         let layout: UICollectionViewFlowLayout = UICollectionViewFlowLayout()
         layout.sectionInset = UIEdgeInsets(top: 20, left: 10, bottom: 10, right: 10)
         layout.itemSize = CGSize(width: 90, height: 120)
-
+        
         collectionView = UICollectionView(frame: self.view.frame, collectionViewLayout: layout)
         collectionView.dataSource = self
         collectionView.delegate = self
         collectionView.register(UICollectionViewCell.self, forCellWithReuseIdentifier: "cell")
         collectionView.backgroundColor = UIColor.white
-       // self.view.addSubview(collectionView)
-     
-
-
-        //setupLayout()
-     
     }
     
     override func updateViewConstraints() {
@@ -94,27 +122,24 @@ class ProfileViewController: UIViewController, UICollectionViewDelegateFlowLayou
         setupLayout()
     }
     
+    override func viewWillLayoutSubviews() {
+        super.viewWillLayoutSubviews()
+        profilePicView.layer.cornerRadius = profilePicView.frame.height / 2.0
+    }
+    
     private func setupLayout(){
         
-        let topContainter = UIView()
         view.addSubview(topContainter)
-
-        topContainter.backgroundColor = .blue
         
-        topContainter.translatesAutoresizingMaskIntoConstraints = false
         topContainter.topAnchor.constraint(equalTo: self.topLayoutGuide.bottomAnchor).isActive = true
         topContainter.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: 0.4).isActive = true
-        //instead of left and right
         topContainter.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
         topContainter.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
         
         topContainter.addSubview(coverImage)
         topContainter.addSubview(profilePicView)
-        topContainter.addSubview(lblNameSurname)
-        topContainter.addSubview(lblCorrectionPoints)
-        topContainter.addSubview(lblWallet)
-
-
+        profilePicView.addSubview(loading)
+        
         coverImage.topAnchor.constraint(equalTo: topContainter.topAnchor).isActive = true
         coverImage.leadingAnchor.constraint(equalTo: topContainter.leadingAnchor).isActive = true
         coverImage.trailingAnchor.constraint(equalTo: topContainter.trailingAnchor).isActive = true
@@ -125,36 +150,33 @@ class ProfileViewController: UIViewController, UICollectionViewDelegateFlowLayou
         profilePicView.heightAnchor.constraint(equalTo: topContainter.heightAnchor, multiplier: 0.5).isActive = true
         profilePicView.widthAnchor.constraint(equalTo: topContainter.heightAnchor, multiplier: 0.5).isActive = true
 
-
-        lblNameSurname.topAnchor.constraint(equalTo: profilePicView.bottomAnchor, constant: 5).isActive = true
-        lblNameSurname.leadingAnchor.constraint(equalTo: topContainter.leadingAnchor).isActive = true
-        lblNameSurname.trailingAnchor.constraint(equalTo: topContainter.trailingAnchor).isActive = true
-        lblNameSurname.heightAnchor.constraint(equalToConstant: 20).isActive = true
+        let stackViewNameWalletCorrection = UIStackView(arrangedSubviews: [lblWallet, lblNameSurname, lblCorrectionPoints])
+       
+        loading.center = profilePicView.center
         
-        //top
-        NSLayoutConstraint(item: lblCorrectionPoints, attribute: .top, relatedBy: .equal, toItem: coverImage, attribute: .bottom, multiplier: 1, constant: profilePicView.frame.height / 8).isActive = true
-//        //left constraint
-        NSLayoutConstraint(item: lblCorrectionPoints, attribute: .left, relatedBy: .equal, toItem: coverImage, attribute: .left, multiplier: 1, constant: 8).isActive = true
-//        //right constraint
-        NSLayoutConstraint(item: lblCorrectionPoints, attribute: .centerX, relatedBy: .equal, toItem: coverImage, attribute: .centerX, multiplier: 1, constant: self.view.frame.width / 3).isActive = true
-        //height constraint
-        NSLayoutConstraint(item: lblCorrectionPoints, attribute: .height, relatedBy: .equal, toItem: lblCorrectionPoints, attribute: .height, multiplier: 0, constant: 20).isActive = true
-        //wallet
-        NSLayoutConstraint(item: lblWallet, attribute: .top, relatedBy: .equal, toItem: coverImage, attribute: .bottom, multiplier: 1, constant: profilePicView.frame.height / 8).isActive = true
-        //        //left constraint
-        NSLayoutConstraint(item: lblWallet, attribute: .left, relatedBy: .equal, toItem: coverImage, attribute: .left, multiplier: 1, constant: 8).isActive = true
-        //        //right constraint
-        NSLayoutConstraint(item: lblWallet, attribute: .centerX, relatedBy: .equal, toItem: coverImage, attribute: .centerX, multiplier: 1, constant: -self.view.frame.width / 3).isActive = true
-        //height constraint
-        NSLayoutConstraint(item: lblWallet, attribute: .height, relatedBy: .equal, toItem: lblCorrectionPoints, attribute: .height, multiplier: 0, constant: 20).isActive = true
+        stackViewNameWalletCorrection.translatesAutoresizingMaskIntoConstraints = false
+        stackViewNameWalletCorrection.distribution = .fillEqually
+        stackViewNameWalletCorrection.spacing = 10
         
+        topContainter.addSubview(stackViewNameWalletCorrection)
         
+        stackViewNameWalletCorrection.heightAnchor.constraint(equalToConstant: 20).isActive = true
+        stackViewNameWalletCorrection.topAnchor.constraint(equalTo: profilePicView.bottomAnchor).isActive = true
+        stackViewNameWalletCorrection.leadingAnchor.constraint(equalTo: topContainter.leadingAnchor).isActive = true
+        stackViewNameWalletCorrection.trailingAnchor.constraint(equalTo: topContainter.trailingAnchor).isActive = true
+        topContainter.addSubview(menuBar)
         
-//        lblCorrectionPoints.heightAnchor.constraint(equalToConstant: 20).isActive = true
-//        lblCorrectionPoints.topAnchor.constraint(equalTo: profilePicView.bottomAnchor, constant: -(profilePicView.frame.height / 8)).isActive = true
-//        lblCorrectionPoints.centerXAnchor.constraint(equalTo: topContainter.centerXAnchor, constant: topContainter.frame.height).isActive = true
-//        //lblCorrectionPoints.trailingAnchor.constraint(equalTo: profilePicView.trailingAnchor).isActive = true
-//        lblCorrectionPoints.widthAnchor.constraint(equalToConstant: profilePicView.frame.width).isActive = true
+        menuBar.topAnchor.constraint(equalTo: stackViewNameWalletCorrection.bottomAnchor).isActive = true
+        menuBar.heightAnchor.constraint(equalToConstant: 50).isActive = true
+        menuBar.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
+        menuBar.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
+        
+        menuBar.addSubview(menuBar.collectionView)
+        
+        menuBar.collectionView.topAnchor.constraint(equalTo: menuBar.topAnchor)
+        menuBar.collectionView.leadingAnchor.constraint(equalTo: menuBar.leadingAnchor).isActive = true
+        menuBar.collectionView.trailingAnchor.constraint(equalTo: menuBar.trailingAnchor).isActive = true
+        menuBar.collectionView.heightAnchor.constraint(equalToConstant: 50).isActive = true
         
     }
     
@@ -178,13 +200,8 @@ class ProfileViewController: UIViewController, UICollectionViewDelegateFlowLayou
         //return CGSizeMake(view.frame.width, 200)
         return CGSize(width: view.frame.width, height: 200)
     }
-    
-    
-    // MARK - IMAGE
- 
-    
-  
-    
+
+    // MARK - fetch image
     var profilePicURL:URL? {
         didSet {
             profilePic = nil
@@ -194,22 +211,9 @@ class ProfileViewController: UIViewController, UICollectionViewDelegateFlowLayou
         }
     }
     
-  
-    
-    var userData:User? {
-        didSet {
-            navigationItem.title = userData?.login
-            profilePicURL = userData?.url
-            lblNameSurname.text = (userData?.firstName)! + " " + (userData?.lastName)!
-            lblWallet.text = "Wallet: " + String(format: "%.0f", (userData?.wallet)!)
-            lblCorrectionPoints.text = "Correction points: " + String(format: "%.0f", (userData?.correctionPoints)!)
-        }
-    }
-    
-    
     private func fetchProfilePic() {
         if let url = profilePicURL {
-         //   loading.startAnimating()
+            loading.startAnimating()
             DispatchQueue.global(qos: .userInitiated).async {  [weak self] in
                 let urlContent = try? Data(contentsOf: url)
                 if let imageData = urlContent, self?.profilePicURL == url {
@@ -218,19 +222,6 @@ class ProfileViewController: UIViewController, UICollectionViewDelegateFlowLayou
                     }
                 }
             }
-            
         }
-    }
-}
-
-extension UIView {
-    func addConstraintsWithFormat(format: String, views: UIView...) {
-        var viewsDictionary = [String: UIView]()
-        for (index, view) in views.enumerated() {
-            let key = "v\(index)"
-            view.translatesAutoresizingMaskIntoConstraints = false
-            viewsDictionary[key] = view
-        }
-        addConstraints(NSLayoutConstraint.constraints(withVisualFormat: format, options: NSLayoutFormatOptions(), metrics: nil, views: viewsDictionary))
     }
 }
