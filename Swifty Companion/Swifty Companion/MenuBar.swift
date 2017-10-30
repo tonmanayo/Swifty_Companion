@@ -20,11 +20,12 @@ class MenuBar : UIView, UICollectionViewDataSource, UICollectionViewDelegate, UI
         return cv
     }()
     
+    let imageNames = ["home","account","stats1"]
     let cellID = "Cell"
     
     override init (frame: CGRect) {
         super.init(frame: frame)        
-        collectionView.register(UICollectionViewCell.self, forCellWithReuseIdentifier: cellID)
+        collectionView.register(MenuBarCell.self, forCellWithReuseIdentifier: cellID)
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -36,9 +37,9 @@ class MenuBar : UIView, UICollectionViewDataSource, UICollectionViewDelegate, UI
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellID, for: indexPath)
-        cell.backgroundColor = UIColor.blue
-        return cell
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellID, for: indexPath) as? MenuBarCell
+        cell?.imageView.image = UIImage(named: imageNames[indexPath.item])
+        return cell!
     }
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         return CGSize(width: frame.width / 3, height: frame.height)
@@ -46,4 +47,37 @@ class MenuBar : UIView, UICollectionViewDataSource, UICollectionViewDelegate, UI
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
         return 0
     }
+}
+
+class BaseCell: UICollectionViewCell {
+    override init(frame: CGRect){
+        super.init(frame: frame)
+        setupViews()
+}
+    func setupViews() {}
+
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+}
+
+class MenuBarCell: BaseCell {
+    
+    let imageView: UIImageView = {
+        let iv = UIImageView()
+        iv.image = UIImage(named: "home")
+        return iv
+    }()
+    
+    override func setupViews() {
+        super.setupViews()
+        addSubview(imageView)
+        
+        imageView.translatesAutoresizingMaskIntoConstraints = false
+        imageView.centerXAnchor.constraint(equalTo: self.centerXAnchor).isActive = true
+        imageView.centerYAnchor.constraint(equalTo: self.centerYAnchor).isActive = true
+        //imageView.trailingAnchor.constraint(equalTo: self.trailingAnchor)
+        //imageView.leadingAnchor.constraint(equalTo: self.leadingAnchor)
+    }
+    
 }
