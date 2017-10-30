@@ -103,7 +103,6 @@ class ProfileViewController: UIViewController, UICollectionViewDelegateFlowLayou
         return mb
     }()
     
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         let layout: UICollectionViewFlowLayout = UICollectionViewFlowLayout()
@@ -115,11 +114,13 @@ class ProfileViewController: UIViewController, UICollectionViewDelegateFlowLayou
         collectionView.delegate = self
         collectionView.register(UICollectionViewCell.self, forCellWithReuseIdentifier: "cell")
         collectionView.backgroundColor = UIColor.white
+        
+        setupLayout()
+
     }
     
     override func updateViewConstraints() {
         super.updateViewConstraints()
-        setupLayout()
     }
     
     override func viewWillLayoutSubviews() {
@@ -151,6 +152,8 @@ class ProfileViewController: UIViewController, UICollectionViewDelegateFlowLayou
         profilePicView.widthAnchor.constraint(equalTo: topContainter.heightAnchor, multiplier: 0.5).isActive = true
 
         let stackViewNameWalletCorrection = UIStackView(arrangedSubviews: [lblWallet, lblNameSurname, lblCorrectionPoints])
+        
+        topContainter.addSubview(stackViewNameWalletCorrection)
        
         loading.center = profilePicView.center
         
@@ -158,12 +161,11 @@ class ProfileViewController: UIViewController, UICollectionViewDelegateFlowLayou
         stackViewNameWalletCorrection.distribution = .fillEqually
         stackViewNameWalletCorrection.spacing = 10
         
-        topContainter.addSubview(stackViewNameWalletCorrection)
-        
         stackViewNameWalletCorrection.heightAnchor.constraint(equalToConstant: 20).isActive = true
         stackViewNameWalletCorrection.topAnchor.constraint(equalTo: profilePicView.bottomAnchor).isActive = true
         stackViewNameWalletCorrection.leadingAnchor.constraint(equalTo: topContainter.leadingAnchor).isActive = true
         stackViewNameWalletCorrection.trailingAnchor.constraint(equalTo: topContainter.trailingAnchor).isActive = true
+        
         topContainter.addSubview(menuBar)
         
         menuBar.topAnchor.constraint(equalTo: stackViewNameWalletCorrection.bottomAnchor).isActive = true
@@ -173,9 +175,10 @@ class ProfileViewController: UIViewController, UICollectionViewDelegateFlowLayou
         
         menuBar.addSubview(menuBar.collectionView)
         
-        menuBar.collectionView.topAnchor.constraint(equalTo: menuBar.topAnchor)
+        menuBar.collectionView.topAnchor.constraint(equalTo: menuBar.topAnchor).isActive = true
         menuBar.collectionView.leadingAnchor.constraint(equalTo: menuBar.leadingAnchor).isActive = true
         menuBar.collectionView.trailingAnchor.constraint(equalTo: menuBar.trailingAnchor).isActive = true
+       // menuBar.collectionView.widthAnchor.constraint(equalTo: menuBar.widthAnchor, multiplier: 0.3).isActive = true
         menuBar.collectionView.heightAnchor.constraint(equalToConstant: 50).isActive = true
         
     }
