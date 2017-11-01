@@ -42,7 +42,7 @@ class ViewController: UIViewController, UserControlDelegate, UITableViewDelegate
     let searchController: UISearchController = {
         let searchController = UISearchController(searchResultsController: nil)
        
-        searchController.searchBar.barTintColor = UIColor(red: 206 / 255, green: 255 / 255, blue: 255 / 255, alpha: 1)
+        searchController.searchBar.barTintColor = UIColor(red: 95 / 255, green: 111 / 255, blue: 111 / 255, alpha: 1)
 
         //searchController.searchBar.translatesAutoresizingMaskIntoConstraints = false
         return searchController
@@ -60,7 +60,9 @@ class ViewController: UIViewController, UserControlDelegate, UITableViewDelegate
 	override func viewDidLoad() {
 		super.viewDidLoad()
         navigationItem.title = "Search for username"
-        UINavigationBar.appearance().backgroundColor = UIColor(red: 2 / 255, green: 174 / 255, blue: 233 / 255, alpha: 1)
+       // UINavigationBar.appearance().backgroundColor = UIColor(red: 95 / 255, green: 111 / 255, blue: 111 / 255, alpha: 1)
+        navigationController?.navigationBar.barTintColor = UIColor(red: 176 / 255, green: 192 / 255, blue: 207 / 255, alpha: 1)
+
         
 		apiController = APIController.init(delegate: self)
         configureSearchController()

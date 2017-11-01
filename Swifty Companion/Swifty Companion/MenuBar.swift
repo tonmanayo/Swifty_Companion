@@ -14,18 +14,21 @@ class MenuBar : UIView, UICollectionViewDataSource, UICollectionViewDelegate, UI
         let layout = UICollectionViewFlowLayout()
         let cv = UICollectionView(frame: .zero, collectionViewLayout: layout)
         cv.translatesAutoresizingMaskIntoConstraints = false
-        cv.backgroundColor = UIColor.red
+        cv.backgroundColor = UIColor(red: 178 / 255, green: 193 / 255, blue: 193 / 255, alpha: 1)
         cv.dataSource = self
         cv.delegate = self
         return cv
     }()
     
-    let imageNames = ["home","account","stats1"]
+    let imageNames = ["home","account","stats"]
     let cellID = "Cell"
     
     override init (frame: CGRect) {
         super.init(frame: frame)        
         collectionView.register(MenuBarCell.self, forCellWithReuseIdentifier: cellID)
+        
+        let indexPath = IndexPath(row: 0, section: 0)
+        collectionView.selectItem(at: indexPath, animated: false, scrollPosition: [])
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -38,7 +41,8 @@ class MenuBar : UIView, UICollectionViewDataSource, UICollectionViewDelegate, UI
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellID, for: indexPath) as? MenuBarCell
-        cell?.imageView.image = UIImage(named: imageNames[indexPath.item])
+        cell?.imageView.image = UIImage(named: imageNames[indexPath.item])?.withRenderingMode(.alwaysTemplate)
+        cell?.tintColor = UIColor(red: 106 / 255, green: 119 / 255, blue: 119 / 255, alpha: 1)
         return cell!
     }
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
@@ -65,9 +69,24 @@ class MenuBarCell: BaseCell {
     
     let imageView: UIImageView = {
         let iv = UIImageView()
-        iv.image = UIImage(named: "home")
+        iv.image = UIImage(named: "home")?.withRenderingMode(.alwaysTemplate)
+        iv.tintColor = UIColor(red: 106 / 255, green: 119 / 255, blue: 119 / 255, alpha: 1)
         return iv
     }()
+    
+    override var isHighlighted: Bool {
+        didSet {
+            imageView.tintColor = isHighlighted ? UIColor.white : UIColor(red: 106 / 255, green: 119 / 255, blue: 119 / 255, alpha: 1)
+        }
+    }
+    
+    override var isSelected: Bool {
+        didSet {
+            imageView.tintColor = isSelected ? UIColor.white : UIColor(red: 106 / 255, green: 119 / 255, blue: 119 / 255, alpha: 1)
+        }
+    }
+    
+    
     
     override func setupViews() {
         super.setupViews()
