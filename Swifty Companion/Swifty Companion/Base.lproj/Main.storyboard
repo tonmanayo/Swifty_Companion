@@ -1,11 +1,11 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13196" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="5z6-ML-hkz">
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="11762" systemVersion="15G1611" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="5z6-ML-hkz">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13173"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="11757"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -29,7 +29,7 @@
                                         <rect key="frame" x="0.0" y="28" width="375" height="87"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="rE3-ca-5a4" id="Zhe-TL-tT9">
-                                            <rect key="frame" x="0.0" y="0.0" width="375" height="86.5"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="375" height="87"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="VIj-yU-ldA">
@@ -49,7 +49,7 @@
                                         </tableViewCellContentView>
                                         <connections>
                                             <outlet property="lblUserName" destination="VIj-yU-ldA" id="q2W-Wh-B5j"/>
-                                            <segue destination="co7-xE-kqF" kind="showDetail" identifier="ProfileSeg" id="N2G-w3-aRQ"/>
+                                            <segue destination="DBN-8l-PTF" kind="showDetail" id="Vc8-Hg-xkR"/>
                                         </connections>
                                     </tableViewCell>
                                 </prototypes>
@@ -75,7 +75,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="420" y="10.344827586206897"/>
+            <point key="canvasLocation" x="702" y="9"/>
         </scene>
         <!--Split View Controller-->
         <scene sceneID="ure-1d-f8m">
@@ -83,7 +83,7 @@
                 <splitViewController id="5z6-ML-hkz" sceneMemberID="viewController">
                     <connections>
                         <segue destination="dg7-l6-bxR" kind="relationship" relationship="masterViewController" id="34O-V4-QLX"/>
-                        <segue destination="co7-xE-kqF" kind="relationship" relationship="detailViewController" id="sGg-4c-25X"/>
+                        <segue destination="DBN-8l-PTF" kind="showDetail" id="IXN-89-GYm"/>
                     </connections>
                 </splitViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="7b7-es-C6Y" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -91,23 +91,23 @@
             <point key="canvasLocation" x="-1321" y="10"/>
         </scene>
         <!--Profile View Controller-->
-        <scene sceneID="aCF-Zu-oFd">
+        <scene sceneID="XB7-ve-fz1">
             <objects>
-                <viewController id="CeO-kW-hGQ" customClass="ProfileViewController" customModule="Swifty_Companion" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="xbt-Lf-81w" customClass="ProfileViewController" customModule="Swifty_Companion" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="zVK-xY-UOM"/>
-                        <viewControllerLayoutGuide type="bottom" id="Ut8-nK-dd3"/>
+                        <viewControllerLayoutGuide type="top" id="aVj-Ym-Mx4"/>
+                        <viewControllerLayoutGuide type="bottom" id="oGT-Kh-ca6"/>
                     </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="1KG-u7-VUc">
+                    <view key="view" contentMode="scaleToFill" id="7xV-cm-a90">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
-                    <navigationItem key="navigationItem" id="XHh-fL-aKp"/>
+                    <navigationItem key="navigationItem" id="mcV-Yx-CdB"/>
                 </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="inP-qV-HkB" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="FlN-S6-mJl" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1058" y="1161"/>
+            <point key="canvasLocation" x="1324" y="958"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="AMn-lQ-t2R">
@@ -128,25 +128,25 @@
             <point key="canvasLocation" x="-359" y="10"/>
         </scene>
         <!--Navigation Controller-->
-        <scene sceneID="UXa-gZ-zmd">
+        <scene sceneID="5WR-qi-KNe">
             <objects>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="4uD-kc-sQ8" userLabel="First Responder" sceneMemberID="firstResponder"/>
-                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="co7-xE-kqF" sceneMemberID="viewController">
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="DBN-8l-PTF" sceneMemberID="viewController">
                     <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="WlO-HW-SXD">
-                        <rect key="frame" x="0.0" y="20" width="375" height="44"/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="P5c-jW-6H2">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="44"/>
                         <autoresizingMask key="autoresizingMask"/>
                     </navigationBar>
                     <nil name="viewControllers"/>
                     <connections>
-                        <segue destination="CeO-kW-hGQ" kind="relationship" relationship="rootViewController" id="GI6-dw-spa"/>
+                        <segue destination="xbt-Lf-81w" kind="relationship" relationship="rootViewController" id="X6Z-qR-lyi"/>
                     </connections>
                 </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="LFU-n3-AQ4" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-260" y="1143"/>
+            <point key="canvasLocation" x="473" y="958"/>
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
-        <segue reference="N2G-w3-aRQ"/>
+        <segue reference="Vc8-Hg-xkR"/>
     </inferredMetricsTieBreakers>
 </document>

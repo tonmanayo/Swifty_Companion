@@ -26,18 +26,18 @@ class ViewController: UIViewController, UserControlDelegate, UITableViewDelegate
         self.splitViewController?.delegate = self
     }
     
-    func splitViewController(
-        _ splitViewController: UISplitViewController,
-        collapseSecondary secondaryViewController: UIViewController,
-        onto primaryViewController: UIViewController) -> Bool
-    {
-        if primaryViewController.contents == self,
-            let ivc = secondaryViewController.contents as? ProfileViewController
-        {
-            return ivc.profilePicURL == nil
-        }
-        return false
-    }
+//    func splitViewController(
+//        _ splitViewController: UISplitViewController,
+//        collapseSecondary secondaryViewController: UIViewController,
+//        onto primaryViewController: UIViewController) -> Bool
+//    {
+//        if primaryViewController.contents == self,
+//            let ivc = secondaryViewController.contents as? ProfileViewController
+//        {
+//            return ivc.profilePicURL == nil
+//        }
+//        return false
+//    }
 
     let searchController: UISearchController = {
         let searchController = UISearchController(searchResultsController: nil)
@@ -66,6 +66,8 @@ class ViewController: UIViewController, UserControlDelegate, UITableViewDelegate
         
 		apiController = APIController.init(delegate: self)
         configureSearchController()
+
+        navigationController?.hidesBarsOnSwipe = true
     }
     
     
@@ -121,9 +123,7 @@ class ViewController: UIViewController, UserControlDelegate, UITableViewDelegate
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         userIndex = indexPath.row
-        //searchController.searchBar.isHidden = true
         searchController.isActive = false
-        
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {

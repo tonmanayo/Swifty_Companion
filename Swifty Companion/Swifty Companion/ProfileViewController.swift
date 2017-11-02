@@ -8,7 +8,8 @@
 
 import UIKit
 
-class ProfileViewController: UIViewController, UICollectionViewDelegateFlowLayout, UICollectionViewDataSource {
+class ProfileViewController: UIViewController, UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
+
 
     
     var userData:User? {
@@ -21,6 +22,8 @@ class ProfileViewController: UIViewController, UICollectionViewDelegateFlowLayou
         }
     }
     
+    let cellID = "cell"
+    
     let loading :UIActivityIndicatorView = {
         let activityIndicator = UIActivityIndicatorView(activityIndicatorStyle: UIActivityIndicatorViewStyle.gray)
         activityIndicator.hidesWhenStopped = true
@@ -29,7 +32,16 @@ class ProfileViewController: UIViewController, UICollectionViewDelegateFlowLayou
         return activityIndicator
     }()
     
-    var collectionView: UICollectionView!
+    lazy var collectionView: UICollectionView = {
+        let layout = UICollectionViewFlowLayout()
+        let cv = UICollectionView(frame: .zero, collectionViewLayout: layout)
+        cv.translatesAutoresizingMaskIntoConstraints = false
+        cv.backgroundColor = UIColor.red
+        cv.dataSource = self
+        cv.delegate = self
+        cv.register(UICollectionViewCell.self, forCellWithReuseIdentifier: self.cellID)
+        return cv
+    }()
     
     let lblWallet: UILabel = {
         let wallet = UILabel(frame: CGRect.zero)
@@ -93,6 +105,7 @@ class ProfileViewController: UIViewController, UICollectionViewDelegateFlowLayou
     let topContainter: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
+        view.backgroundColor = UIColor.blue
         return view
     }()
 
@@ -105,16 +118,7 @@ class ProfileViewController: UIViewController, UICollectionViewDelegateFlowLayou
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        let layout: UICollectionViewFlowLayout = UICollectionViewFlowLayout()
-        layout.sectionInset = UIEdgeInsets(top: 20, left: 10, bottom: 10, right: 10)
-        layout.itemSize = CGSize(width: 90, height: 120)
-        
-        collectionView = UICollectionView(frame: self.view.frame, collectionViewLayout: layout)
-        collectionView.dataSource = self
-        collectionView.delegate = self
-        collectionView.register(UICollectionViewCell.self, forCellWithReuseIdentifier: "cell")
-        //collectionView.backgroundColor = UIColor(red: 176 / 255, green: 192 / 255, blue: 207 / 255, alpha: 1)
-        
+       
         setupLayout()
 
     }
@@ -125,6 +129,8 @@ class ProfileViewController: UIViewController, UICollectionViewDelegateFlowLayou
     
     override func viewWillLayoutSubviews() {
         super.viewWillLayoutSubviews()
+        menuBar.collectionView.collectionViewLayout.invalidateLayout()
+        collectionView.collectionViewLayout.invalidateLayout() //here123
     }
     
     private func setupLayout(){
@@ -143,10 +149,10 @@ class ProfileViewController: UIViewController, UICollectionViewDelegateFlowLayou
         coverImage.topAnchor.constraint(equalTo: topContainter.topAnchor).isActive = true
         coverImage.leadingAnchor.constraint(equalTo: topContainter.leadingAnchor).isActive = true
         coverImage.trailingAnchor.constraint(equalTo: topContainter.trailingAnchor).isActive = true
-        coverImage.heightAnchor.constraint(equalTo: topContainter.heightAnchor, multiplier: 0.5).isActive = true
+        coverImage.heightAnchor.constraint(equalTo: topContainter.heightAnchor, multiplier: 0.3).isActive = true
         
         profilePicView.centerXAnchor.constraint(equalTo: topContainter.centerXAnchor).isActive = true
-        profilePicView.centerYAnchor.constraint(equalTo: topContainter.centerYAnchor).isActive = true
+        profilePicView.topAnchor.constraint(equalTo: coverImage.centerYAnchor).isActive = true
         profilePicView.heightAnchor.constraint(equalTo: topContainter.heightAnchor, multiplier: 0.5).isActive = true
         profilePicView.widthAnchor.constraint(equalTo: topContainter.heightAnchor, multiplier: 0.5).isActive = true
 
@@ -172,36 +178,36 @@ class ProfileViewController: UIViewController, UICollectionViewDelegateFlowLayou
         menuBar.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
         menuBar.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
         
-        menuBar.addSubview(menuBar.collectionView)
+        view.addSubview(collectionView)
         
-        menuBar.collectionView.topAnchor.constraint(equalTo: menuBar.topAnchor).isActive = true
-        menuBar.collectionView.leadingAnchor.constraint(equalTo: menuBar.leadingAnchor).isActive = true
-        menuBar.collectionView.trailingAnchor.constraint(equalTo: menuBar.trailingAnchor).isActive = true
-       // menuBar.collectionView.widthAnchor.constraint(equalTo: menuBar.widthAnchor, multiplier: 0.3).isActive = true
-        menuBar.collectionView.heightAnchor.constraint(equalToConstant: 50).isActive = true
+        collectionView.topAnchor.constraint(equalTo: menuBar.bottomAnchor).isActive = true
+        collectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
+        collectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
+        collectionView.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: 0.6).isActive = true
         
     }
     
     // MARK: - UICollectionViewDataSource protocol
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 5
+   func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return 3
     }
     
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cell", for: indexPath as IndexPath)
-       // cell.backgroundColor = UIColor.cyan
+   func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellID, for: indexPath as IndexPath)
+        cell.backgroundColor = UIColor.cyan
         return cell
     }
     
-    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        // handle tap events
-        print("You selected cell #\(indexPath.item)!")
-    }
+//    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+//        // handle tap events
+//        print("You selected cell #\(indexPath.item)!")
+//    }
     
-    internal func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        //return CGSizeMake(view.frame.width, 200)
-        return CGSize(width: view.frame.width, height: 200)
-    }
+//    internal func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+//        //return CGSizeMake(view.frame.width, 200)
+//        return CGSize(width: view.frame.width, height: 200)
+//    }
+    
 
     // MARK - fetch image
     var profilePicURL:URL? {

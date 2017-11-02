@@ -20,12 +20,24 @@ class MenuBar : UIView, UICollectionViewDataSource, UICollectionViewDelegate, UI
         return cv
     }()
     
+    
+    let horizontalSlider: UIView = {
+        let bar = UIView()
+        bar.backgroundColor = UIColor(white: 0.95, alpha: 1)
+        bar.translatesAutoresizingMaskIntoConstraints = false
+        return bar
+    }()
+    
     let imageNames = ["home","account","stats"]
     let cellID = "Cell"
+    
+    var sliderPosition: NSLayoutConstraint?
     
     override init (frame: CGRect) {
         super.init(frame: frame)        
         collectionView.register(MenuBarCell.self, forCellWithReuseIdentifier: cellID)
+        
+        setupLayout()
         
         let indexPath = IndexPath(row: 0, section: 0)
         collectionView.selectItem(at: indexPath, animated: false, scrollPosition: [])
@@ -51,6 +63,32 @@ class MenuBar : UIView, UICollectionViewDataSource, UICollectionViewDelegate, UI
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
         return 0
     }
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let x = CGFloat(indexPath.item) * frame.width / 3
+        sliderPosition?.constant = x
+        UIView.animate(withDuration: 0.75, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 1, options: .curveEaseOut, animations: { 
+            self.layoutIfNeeded()
+        }, completion: nil)
+    }
+    
+    
+    private func setupLayout() {
+        addSubview(collectionView)
+        addSubview(horizontalSlider)
+        collectionView.topAnchor.constraint(equalTo: self.topAnchor).isActive = true
+        collectionView.leadingAnchor.constraint(equalTo: self.leadingAnchor).isActive = true
+        collectionView.trailingAnchor.constraint(equalTo: self.trailingAnchor).isActive = true
+        collectionView.heightAnchor.constraint(equalToConstant: 50).isActive = true
+        
+        sliderPosition = horizontalSlider.leftAnchor.constraint(equalTo: self.leftAnchor)
+        sliderPosition?.isActive = true
+        horizontalSlider.bottomAnchor.constraint(equalTo: self.bottomAnchor).isActive = true
+        horizontalSlider.widthAnchor.constraint(equalTo: self.widthAnchor, multiplier: 0.3).isActive = true
+        horizontalSlider.heightAnchor.constraint(equalToConstant: 4).isActive = true
+    }
+    
+    
 }
 
 class BaseCell: UICollectionViewCell {
