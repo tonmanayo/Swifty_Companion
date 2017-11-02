@@ -52,8 +52,8 @@ class ProfileViewController: UIViewController, UICollectionViewDelegateFlowLayou
         return correctionPoints
     }()
     
-    let profilePicView: UIImageView = {
-        let imageView = UIImageView(image: #imageLiteral(resourceName: "loading"))
+    let profilePicView: CustomUIImageView = {
+        let imageView = CustomUIImageView(image: #imageLiteral(resourceName: "loading"))
         imageView.translatesAutoresizingMaskIntoConstraints = false
         imageView.contentMode = .scaleAspectFill
         imageView.layer.masksToBounds = true
@@ -113,7 +113,7 @@ class ProfileViewController: UIViewController, UICollectionViewDelegateFlowLayou
         collectionView.dataSource = self
         collectionView.delegate = self
         collectionView.register(UICollectionViewCell.self, forCellWithReuseIdentifier: "cell")
-        collectionView.backgroundColor = UIColor.white
+        //collectionView.backgroundColor = UIColor(red: 176 / 255, green: 192 / 255, blue: 207 / 255, alpha: 1)
         
         setupLayout()
 
@@ -125,7 +125,6 @@ class ProfileViewController: UIViewController, UICollectionViewDelegateFlowLayou
     
     override func viewWillLayoutSubviews() {
         super.viewWillLayoutSubviews()
-        profilePicView.layer.cornerRadius = profilePicView.frame.height / 2.0
     }
     
     private func setupLayout(){
@@ -190,7 +189,7 @@ class ProfileViewController: UIViewController, UICollectionViewDelegateFlowLayou
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cell", for: indexPath as IndexPath)
-        cell.backgroundColor = UIColor.cyan
+       // cell.backgroundColor = UIColor.cyan
         return cell
     }
     
@@ -226,5 +225,13 @@ class ProfileViewController: UIViewController, UICollectionViewDelegateFlowLayou
                 }
             }
         }
+    }
+}
+
+class CustomUIImageView: UIImageView {
+    override func layoutSubviews() {
+        super.layoutSubviews()
+        let radius: CGFloat = self.bounds.size.width / 2.0
+        self.layer.cornerRadius = radius
     }
 }
