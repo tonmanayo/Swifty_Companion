@@ -23,7 +23,8 @@ class ProfileViewController: UIViewController, UICollectionViewDataSource, UICol
     }
     
     let cellID = "cell"
-    
+    let titles = ["Home", "Projects", "Skills"]
+
     let loading :UIActivityIndicatorView = {
         let activityIndicator = UIActivityIndicatorView(activityIndicatorStyle: UIActivityIndicatorViewStyle.gray)
         activityIndicator.hidesWhenStopped = true
@@ -158,11 +159,17 @@ class ProfileViewController: UIViewController, UICollectionViewDataSource, UICol
     func scrollToMenuIndex(menuIndex: Int) {
         let indexPath = IndexPath(row: menuIndex, section: 0)
         collectionView.scrollToItem(at: indexPath, at: [], animated: true)
+        setTitle(index: menuIndex)
     }
     
     func scrollViewWillEndDragging(_ scrollView: UIScrollView, withVelocity velocity: CGPoint, targetContentOffset: UnsafeMutablePointer<CGPoint>) {
         let indexPath = IndexPath(item: Int(targetContentOffset.pointee.x / view.frame.width), section: 0)
         menuBar.collectionView.selectItem(at: indexPath, animated: true, scrollPosition: [])
+        setTitle(index: Int(targetContentOffset.pointee.x / view.frame.width))
+    }
+    
+    private func setTitle(index: Int) {
+        navigationItem.title = titles[index]
     }
     
     private func setupLayout(){
@@ -218,19 +225,6 @@ class ProfileViewController: UIViewController, UICollectionViewDataSource, UICol
         collectionView.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: 0.6).isActive = true
         
     }
-    
-    // MARK: - UICollectionViewDataSource protocol
-
-    
-//    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-//        // handle tap events
-//        print("You selected cell #\(indexPath.item)!")
-//    }
-    
-//    internal func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-//        //return CGSizeMake(view.frame.width, 200)
-//        return CGSize(width: view.frame.width, height: 200)
-//    }
     
 
     // MARK - fetch image
