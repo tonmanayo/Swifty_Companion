@@ -34,12 +34,15 @@ class ProfileViewController: UIViewController, UICollectionViewDataSource, UICol
     
     lazy var collectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
+        layout.scrollDirection = .horizontal
+        layout.minimumLineSpacing = 0
         let cv = UICollectionView(frame: .zero, collectionViewLayout: layout)
         cv.translatesAutoresizingMaskIntoConstraints = false
         cv.backgroundColor = UIColor.red
         cv.dataSource = self
         cv.delegate = self
         cv.register(UICollectionViewCell.self, forCellWithReuseIdentifier: self.cellID)
+        cv.isPagingEnabled = true
         return cv
     }()
     
@@ -108,11 +111,11 @@ class ProfileViewController: UIViewController, UICollectionViewDataSource, UICol
         view.backgroundColor = UIColor.blue
         return view
     }()
-
     
-    let menuBar: MenuBar = {
+    lazy var menuBar: MenuBar = {
         let mb = MenuBar()
         mb.translatesAutoresizingMaskIntoConstraints = false
+        mb.profileViewController = self
         return mb
     }()
     
@@ -131,6 +134,35 @@ class ProfileViewController: UIViewController, UICollectionViewDataSource, UICol
         super.viewWillLayoutSubviews()
         menuBar.collectionView.collectionViewLayout.invalidateLayout()
         collectionView.collectionViewLayout.invalidateLayout() //here123
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        return CGSize(width: collectionView.frame.width, height: collectionView.frame.height)
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return 3
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellID, for: indexPath as IndexPath)
+        let colorArray = [UIColor.red, UIColor.green, UIColor.blue]
+        cell.backgroundColor = colorArray[indexPath.row]
+        return cell
+    }
+    
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        menuBar.sliderPosition?.constant = scrollView.contentOffset.x / 3
+    }
+    
+    func scrollToMenuIndex(menuIndex: Int) {
+        let indexPath = IndexPath(row: menuIndex, section: 0)
+        collectionView.scrollToItem(at: indexPath, at: [], animated: true)
+    }
+    
+    func scrollViewWillEndDragging(_ scrollView: UIScrollView, withVelocity velocity: CGPoint, targetContentOffset: UnsafeMutablePointer<CGPoint>) {
+        let indexPath = IndexPath(item: Int(targetContentOffset.pointee.x / view.frame.width), section: 0)
+        menuBar.collectionView.selectItem(at: indexPath, animated: true, scrollPosition: [])
     }
     
     private func setupLayout(){
@@ -188,15 +220,7 @@ class ProfileViewController: UIViewController, UICollectionViewDataSource, UICol
     }
     
     // MARK: - UICollectionViewDataSource protocol
-   func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 3
-    }
-    
-   func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellID, for: indexPath as IndexPath)
-        cell.backgroundColor = UIColor.cyan
-        return cell
-    }
+
     
 //    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
 //        // handle tap events
