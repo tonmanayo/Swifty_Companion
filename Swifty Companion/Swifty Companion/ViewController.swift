@@ -136,11 +136,15 @@ class ViewController: UIViewController, UserControlDelegate, UITableViewDelegate
                     }
                 self?.userData = User(data: responseObject as NSDictionary?)!
                 profileViewController.userData = self?.userData
+                DispatchQueue.main.async {
+                    profileViewController.collectionView.reloadData()
+                }
                 if (self?.userData?.profilePicture?.absoluteString == "https://cdn.intra.42.fr/images/default.png") {
                     profileViewController.profilePicURL =  URL(string: "http://clipart-library.com/image_gallery/267356.png")
                 } else {
                     profileViewController.profilePicURL = self?.userData?.profilePicture
                 }
+                
             }
         }
     }

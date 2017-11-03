@@ -10,8 +10,6 @@ import UIKit
 
 class ProfileViewController: UIViewController, UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
 
-
-    
     var userData:User? {
         didSet {
             navigationItem.title = userData?.login
@@ -19,6 +17,8 @@ class ProfileViewController: UIViewController, UICollectionViewDataSource, UICol
             lblNameSurname.text = (userData?.firstName)! + " " + (userData?.lastName)!
             lblWallet.text = "Wallet: " + String(format: "%.0f", (userData?.wallet)!)
             lblCorrectionPoints.text = "Correction points: " + String(format: "%.0f", (userData?.correctionPoints)!)
+            collectionView.reloadData()
+            
         }
     }
     
@@ -39,11 +39,11 @@ class ProfileViewController: UIViewController, UICollectionViewDataSource, UICol
         layout.minimumLineSpacing = 0
         let cv = UICollectionView(frame: .zero, collectionViewLayout: layout)
         cv.translatesAutoresizingMaskIntoConstraints = false
-        cv.backgroundColor = UIColor.red
         cv.dataSource = self
         cv.delegate = self
-        cv.register(UICollectionViewCell.self, forCellWithReuseIdentifier: self.cellID)
+        cv.register(FeedCell.self, forCellWithReuseIdentifier: self.cellID)
         cv.isPagingEnabled = true
+        
         return cv
     }()
     
@@ -109,7 +109,7 @@ class ProfileViewController: UIViewController, UICollectionViewDataSource, UICol
     let topContainter: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = UIColor.blue
+       
         return view
     }()
     
@@ -122,9 +122,14 @@ class ProfileViewController: UIViewController, UICollectionViewDataSource, UICol
     
     override func viewDidLoad() {
         super.viewDidLoad()
-       
         setupLayout()
 
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellID, for: indexPath as IndexPath) as! FeedCell
+        cell.profileViewController = self
+        return cell
     }
     
     override func updateViewConstraints() {
@@ -134,7 +139,7 @@ class ProfileViewController: UIViewController, UICollectionViewDataSource, UICol
     override func viewWillLayoutSubviews() {
         super.viewWillLayoutSubviews()
         menuBar.collectionView.collectionViewLayout.invalidateLayout()
-        collectionView.collectionViewLayout.invalidateLayout() //here123
+        collectionView.collectionViewLayout.invalidateLayout()
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
@@ -143,13 +148,6 @@ class ProfileViewController: UIViewController, UICollectionViewDataSource, UICol
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return 3
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellID, for: indexPath as IndexPath)
-        let colorArray = [UIColor.red, UIColor.green, UIColor.blue]
-        cell.backgroundColor = colorArray[indexPath.row]
-        return cell
     }
     
     func scrollViewDidScroll(_ scrollView: UIScrollView) {
@@ -225,7 +223,6 @@ class ProfileViewController: UIViewController, UICollectionViewDataSource, UICol
         collectionView.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: 0.6).isActive = true
         
     }
-    
 
     // MARK - fetch image
     var profilePicURL:URL? {
