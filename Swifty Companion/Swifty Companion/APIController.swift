@@ -48,11 +48,13 @@ class APIController {
                 response in
                 switch response.result {
                 case .success(let value):
-                    let json = JSON(value).arrayObject
+                    
                     var users: [SearchUsers] = []
-                    for new in json! {
+                    if let json = JSON(value).arrayObject {
+                    for new in json {
                         users.append(SearchUsers(data: (new as! NSDictionary))!)
                     }
+                }
                     completionHandler(users, nil)
                 case .failure(let error):
                     completionHandler(nil, error)

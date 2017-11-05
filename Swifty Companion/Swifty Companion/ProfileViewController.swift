@@ -19,6 +19,23 @@ class ProfileViewController: UIViewController, UICollectionViewDataSource, UICol
             lblCorrectionPoints.text = "Correction points: " + String(format: "%.0f", (userData?.correctionPoints)!)
             collectionView.reloadData()
             
+            
+            var basicInfo:[(key: Int,projectName: String, validated: Double, mark: Double)] = []
+
+            for project in (userData?.project)! {
+                if (project.parentID == Double(0)) {
+                    
+                    let index = project.curriculumID![0] as! Int
+                    basicInfo.append((key: index, projectName: project.name, validated: project.validated, mark: project.mark))
+                    //test[project.curriculumID[0]] =
+                }
+            }
+            print("basic Info")
+            for info in basicInfo {
+                if (info.key == Int(11)) {
+                    print (info)
+                }
+            }
         }
     }
     
