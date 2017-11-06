@@ -33,15 +33,19 @@ class ProfileViewController: UIViewController,
                     //test[project.curriculumID[0]] =
                 }
             }
-            
+            let curr = Curriculum(data: userData?.cursesUsers[0] as! NSDictionary?)
             for curriculem in (userData?.cursesUsers)! {
                 let currentCurric = Curriculum(data: curriculem as? NSDictionary)
                 curriculemNames.append((currentCurric?.curriculumName)!)
                 
             }
+            
             curriculumPickerText.text = curriculemNames[0]
+            progressBar.progress = Float((curr?.level)!.truncatingRemainder(dividingBy: 1))
             self.curriculumPicker.reloadAllComponents()
             self.curriculumPickerText.reloadInputViews()
+            lblLevel.text = "Level \(floor((curr?.level)!))"
+            
         }
     }
     
@@ -177,6 +181,25 @@ class ProfileViewController: UIViewController,
         return text
     }()
     
+    var progressBar: CustomProgressView = {
+        let bar = CustomProgressView()
+        bar.height = 10.0
+        bar.translatesAutoresizingMaskIntoConstraints = false
+        bar.progress = 0.0
+        return bar
+    }()
+    
+    let lblLevel: UILabel = {
+        let level = UILabel(frame: CGRect.zero)
+        level.textAlignment = .center
+        level.text = "Level: "
+        level.font = UIFont.boldSystemFont(ofSize: 10)
+        level.adjustsFontSizeToFitWidth = true
+        level.minimumScaleFactor = 0.5
+        level.translatesAutoresizingMaskIntoConstraints = false
+        return level
+    }()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         curriculumPickerText.inputView = curriculumPicker
@@ -253,6 +276,9 @@ class ProfileViewController: UIViewController,
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
         curriculumPickerText.text = curriculemNames[row]
         selectedCurriculem = row
+        let currentC = Curriculum(data: userData?.cursesUsers[selectedCurriculem] as! NSDictionary?)
+        progressBar.progress = Float((currentC?.level)!.truncatingRemainder(dividingBy: 1))
+        lblLevel.text = "Level \(floor((currentC?.level)!))"
         self.view.endEditing(true)
     }
     
@@ -308,9 +334,23 @@ class ProfileViewController: UIViewController,
         stackViewNameWalletCorrection.leadingAnchor.constraint(equalTo: topContainter.leadingAnchor).isActive = true
         stackViewNameWalletCorrection.trailingAnchor.constraint(equalTo: topContainter.trailingAnchor).isActive = true
         
+        topContainter.addSubview(progressBar)
+        
+        progressBar.topAnchor.constraint(equalTo: stackViewNameWalletCorrection.bottomAnchor).isActive = true
+        progressBar.heightAnchor.constraint(equalToConstant: 10).isActive = true
+        progressBar.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
+        progressBar.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
+        
+        progressBar.addSubview(lblLevel)
+        lblLevel.topAnchor.constraint(equalTo: progressBar.topAnchor).isActive = true
+        lblLevel.heightAnchor.constraint(equalToConstant: 10).isActive = true
+        lblLevel.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
+        lblLevel.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
+        
+        
         topContainter.addSubview(menuBar)
         
-        menuBar.topAnchor.constraint(equalTo: stackViewNameWalletCorrection.bottomAnchor).isActive = true
+        menuBar.topAnchor.constraint(equalTo: progressBar.bottomAnchor).isActive = true
         menuBar.heightAnchor.constraint(equalToConstant: 50).isActive = true
         menuBar.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
         menuBar.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
@@ -355,4 +395,16 @@ class CustomUIImageView: UIImageView {
         let radius: CGFloat = self.bounds.size.width / 2.0
         self.layer.cornerRadius = radius
     }
+}
+
+class CustomProgressView: UIProgressView {
+    
+    var height:CGFloat = 1.0
+    
+    override func sizeThatFits(_ size: CGSize) -> CGSize {
+        let size:CGSize = CGSize.init(width: self.frame.size.width, height: height)
+        
+        return size
+    }
+    
 }
