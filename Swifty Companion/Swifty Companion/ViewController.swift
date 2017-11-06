@@ -83,7 +83,7 @@ UISplitViewControllerDelegate
         if let searchText = searchController.searchBar.text {
             self.apiController?.getUserNames(searchText: searchController.searchBar.text!)  {[weak self] responseObject, error in
                 if (searchText == searchController.searchBar.text) {
-                    if (responseObject?.count == 0) {
+                    if (responseObject?.count == 0 || (responseObject == nil)) {
                         print("No Users Found")
                         return
                     }

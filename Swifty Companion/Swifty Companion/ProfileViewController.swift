@@ -44,7 +44,7 @@ class ProfileViewController: UIViewController,
             progressBar.progress = Float((curr?.level)!.truncatingRemainder(dividingBy: 1))
             self.curriculumPicker.reloadAllComponents()
             self.curriculumPickerText.reloadInputViews()
-            lblLevel.text = "Level \(floor((curr?.level)!))"
+            lblLevel.text = "Level \(String(format: "%.0f", (curr?.level)!))"
             
         }
     }
@@ -278,7 +278,7 @@ class ProfileViewController: UIViewController,
         selectedCurriculem = row
         let currentC = Curriculum(data: userData?.cursesUsers[selectedCurriculem] as! NSDictionary?)
         progressBar.progress = Float((currentC?.level)!.truncatingRemainder(dividingBy: 1))
-        lblLevel.text = "Level \(floor((currentC?.level)!))"
+        lblLevel.text = "Level \(String(format: "%.0f", (currentC?.level)!))"
         self.view.endEditing(true)
     }
     
@@ -405,6 +405,9 @@ class CustomProgressView: UIProgressView {
         let size:CGSize = CGSize.init(width: self.frame.size.width, height: height)
         
         return size
+    }
+    var preferredStatusBarStyle: UIStatusBarStyle {
+        return .lightContent
     }
     
 }
