@@ -9,7 +9,14 @@
 import UIKit
 import Alamofire
 
-class ViewController: UIViewController, UserControlDelegate, UITableViewDelegate, UITableViewDataSource, UISearchResultsUpdating, UISearchBarDelegate, UISplitViewControllerDelegate{
+class ViewController: UIViewController,
+UserControlDelegate,
+UITableViewDelegate,
+UITableViewDataSource,
+UISearchResultsUpdating,
+UISearchBarDelegate,
+UISplitViewControllerDelegate
+{
     
 
 	var apiController : APIController?
@@ -177,8 +184,6 @@ class ViewController: UIViewController, UserControlDelegate, UITableViewDelegate
 //        }
        // print((user!.cursesUsers[0] as! NSDictionary).value(forKey: "cursus_id")!)
         // print(((user!.cursesUsers[1] as! NSDictionary).value(forKey: "cursus")! as! NSDictionary).value(forKey: "name")! as! String)
-        //print(user!.)
-        ///todo ill finish the api tomorrow
         
 	}
 }

@@ -1,15 +1,17 @@
 //
-//  FeedCell.swift
+//  ProjectsCollectionViewCell.swift
 //  Swifty Companion
 //
-//  Created by tony mack on 11/3/17.
+//  Created by Tony MACK on 2017/11/06.
 //  Copyright © 2017 janhoon. All rights reserved.
 //
 
 import UIKit
 
-class FeedCell: BaseCell, UICollectionViewDelegateFlowLayout, UICollectionViewDelegate, UICollectionViewDataSource {
+class ProjectCells:BaseCell, UICollectionViewDelegateFlowLayout, UICollectionViewDelegate, UICollectionViewDataSource {
     
+    var check:Bool = false
+    let projectCellID = "projectCell"
     lazy var collectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
         let cv = UICollectionView(frame: .zero, collectionViewLayout: layout)
@@ -20,38 +22,33 @@ class FeedCell: BaseCell, UICollectionViewDelegateFlowLayout, UICollectionViewDe
         return cv
     }()
     
-    let homeCellID = "homeCell"
-    
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-      return  basicInfo.count
+        //return  basicInfo.count
+        return 1
     }
-
-    var basicInfo:[(name: String, value: String)] = []
-    var check:Bool = false
     
     var profileViewController:ProfileViewController? {
         didSet {
             if (profileViewController?.userData?.login != nil && check == false){
-                basicInfo.append((name: "Username", value: profileViewController?.userData?.login ?? ""))
-                basicInfo.append((name: "Name", value: profileViewController?.userData?.firstName ?? ""))
-                basicInfo.append((name: "Surname", value: profileViewController?.userData?.lastName ?? ""))
-                basicInfo.append((name: "Email", value: profileViewController?.userData?.email ?? ""))
-                basicInfo.append((name: "Phone number", value: profileViewController?.userData?.mobileNumber ?? ""))
-                basicInfo.append((name: "Campus", value: profileViewController?.userData?.campusName ?? ""))
-                basicInfo.append((name: "", value: ""))
-                check = true
+//                basicInfo.append((name: "Username", value: profileViewController?.userData?.login ?? ""))
+//                basicInfo.append((name: "Name", value: profileViewController?.userData?.firstName ?? ""))
+//                basicInfo.append((name: "Surname", value: profileViewController?.userData?.lastName ?? ""))
+//                basicInfo.append((name: "Email", value: profileViewController?.userData?.email ?? ""))
+//                basicInfo.append((name: "Phone number", value: profileViewController?.userData?.mobileNumber ?? ""))
+//                basicInfo.append((name: "Campus", value: profileViewController?.userData?.campusName ?? ""))
+//                basicInfo.append((name: "", value: ""))
+//                check = true
                 collectionView.reloadData()
             }
         }
     }
+
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: homeCellID, for: indexPath) as! HomeCell
-        cell.lblLabel.text =  basicInfo[indexPath.row].name
-        cell.lblDetail.text = basicInfo[indexPath.row].value
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: projectCellID, for: indexPath) as! ProjectCell
+        cell.lblLabel.text = "tony"
         return cell
     }
-    
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         let height:CGFloat = 50
@@ -67,8 +64,7 @@ class FeedCell: BaseCell, UICollectionViewDelegateFlowLayout, UICollectionViewDe
         collectionView.leadingAnchor.constraint(equalTo: self.leadingAnchor).isActive = true
         collectionView.heightAnchor.constraint(equalTo: self.heightAnchor).isActive = true
         
-        collectionView.register(HomeCell.self, forCellWithReuseIdentifier: homeCellID)
+        collectionView.register(ProjectCell.self, forCellWithReuseIdentifier: projectCellID)
     }
+
 }
-
-

@@ -8,8 +8,12 @@
 
 import UIKit
 
-class ProfileViewController: UIViewController, UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
+class ProfileViewController: UIViewController,
+    UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout,
+    UIPickerViewDelegate,UIPickerViewDataSource{
 
+    var curriculemNames:[String] = []
+    var selectedCurriculem: Int = 0
     var userData:User? {
         didSet {
             navigationItem.title = userData?.login
@@ -18,7 +22,6 @@ class ProfileViewController: UIViewController, UICollectionViewDataSource, UICol
             lblWallet.text = "Wallet: " + String(format: "%.0f", (userData?.wallet)!)
             lblCorrectionPoints.text = "Correction points: " + String(format: "%.0f", (userData?.correctionPoints)!)
             collectionView.reloadData()
-            
             
             var basicInfo:[(key: Int,projectName: String, validated: Double, mark: Double)] = []
 
@@ -30,16 +33,20 @@ class ProfileViewController: UIViewController, UICollectionViewDataSource, UICol
                     //test[project.curriculumID[0]] =
                 }
             }
-            print("basic Info")
-            for info in basicInfo {
-                if (info.key == Int(11)) {
-                    print (info)
-                }
+            
+            for curriculem in (userData?.cursesUsers)! {
+                let currentCurric = Curriculum(data: curriculem as? NSDictionary)
+                curriculemNames.append((currentCurric?.curriculumName)!)
+                
             }
+            curriculumPickerText.text = curriculemNames[0]
+            self.curriculumPicker.reloadAllComponents()
+            self.curriculumPickerText.reloadInputViews()
         }
     }
     
     let cellID = "cell"
+    let projectCellID = "projectCellID"
     let titles = ["Home", "Projects", "Skills"]
 
     let loading :UIActivityIndicatorView = {
@@ -59,6 +66,8 @@ class ProfileViewController: UIViewController, UICollectionViewDataSource, UICol
         cv.dataSource = self
         cv.delegate = self
         cv.register(FeedCell.self, forCellWithReuseIdentifier: self.cellID)
+        cv.register(ProjectCells.self, forCellWithReuseIdentifier: self.projectCellID)
+
         cv.isPagingEnabled = true
         
         return cv
@@ -83,6 +92,17 @@ class ProfileViewController: UIViewController, UICollectionViewDataSource, UICol
         correctionPoints.textColor = UIColor.gray
         correctionPoints.translatesAutoresizingMaskIntoConstraints = false
         return correctionPoints
+    }()
+    
+    let lblCurriculum: UILabel = {
+        let curriculum = UILabel(frame: CGRect.zero)
+        curriculum.textAlignment = .center
+        curriculum.text = "Curriculum"
+        curriculum.font = UIFont.boldSystemFont(ofSize: 12)
+        curriculum.adjustsFontSizeToFitWidth = true
+        curriculum.textColor = UIColor.black
+        curriculum.translatesAutoresizingMaskIntoConstraints = false
+        return curriculum
     }()
     
     let profilePicView: CustomUIImageView = {
@@ -137,16 +157,44 @@ class ProfileViewController: UIViewController, UICollectionViewDataSource, UICol
         return mb
     }()
     
+    lazy var curriculumPicker: UIPickerView = {
+        let picker = UIPickerView()
+        picker.dataSource = self
+        picker.delegate = self
+        picker.backgroundColor = .white
+        return picker
+    }()
+    
+    lazy var curriculumPickerText: UITextField = {
+        let text = UITextField()
+        
+        text.textAlignment = .center
+        text.font = UIFont.boldSystemFont(ofSize: 12)
+        text.adjustsFontSizeToFitWidth = true
+        text.textColor = UIColor.gray
+
+        text.translatesAutoresizingMaskIntoConstraints = false
+        return text
+    }()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        curriculumPickerText.inputView = curriculumPicker
         setupLayout()
 
     }
-    
+    // MARK Collection View stuff
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        if (indexPath.row == 1) {
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: projectCellID, for: indexPath as IndexPath) as! ProjectCells
+            cell.profileViewController = self
+            return cell
+        }
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellID, for: indexPath as IndexPath) as! FeedCell
         cell.profileViewController = self
         return cell
+       
+        
     }
     
     override func updateViewConstraints() {
@@ -155,6 +203,7 @@ class ProfileViewController: UIViewController, UICollectionViewDataSource, UICol
     
     override func viewWillLayoutSubviews() {
         super.viewWillLayoutSubviews()
+        
         menuBar.collectionView.collectionViewLayout.invalidateLayout()
         collectionView.collectionViewLayout.invalidateLayout()
     }
@@ -187,6 +236,27 @@ class ProfileViewController: UIViewController, UICollectionViewDataSource, UICol
         navigationItem.title = titles[index]
     }
     
+    //MARK - picker
+    
+    func numberOfComponents(in pickerView: UIPickerView) -> Int {
+      return 1
+    }
+    
+    func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
+        return (userData?.cursesUsers.count) ?? 0
+    }
+    
+    func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
+        return curriculemNames[row]
+    }
+    
+    func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
+        curriculumPickerText.text = curriculemNames[row]
+        selectedCurriculem = row
+        self.view.endEditing(true)
+    }
+    
+    
     private func setupLayout(){
         
         view.addSubview(topContainter)
@@ -199,6 +269,8 @@ class ProfileViewController: UIViewController, UICollectionViewDataSource, UICol
         topContainter.addSubview(coverImage)
         topContainter.addSubview(profilePicView)
         profilePicView.addSubview(loading)
+        topContainter.addSubview(lblCurriculum)
+        topContainter.addSubview(curriculumPickerText)
         
         coverImage.topAnchor.constraint(equalTo: topContainter.topAnchor).isActive = true
         coverImage.leadingAnchor.constraint(equalTo: topContainter.leadingAnchor).isActive = true
@@ -209,7 +281,18 @@ class ProfileViewController: UIViewController, UICollectionViewDataSource, UICol
         profilePicView.topAnchor.constraint(equalTo: coverImage.centerYAnchor).isActive = true
         profilePicView.heightAnchor.constraint(equalTo: topContainter.heightAnchor, multiplier: 0.5).isActive = true
         profilePicView.widthAnchor.constraint(equalTo: topContainter.heightAnchor, multiplier: 0.5).isActive = true
-
+        
+        //lblCurriculum.centerXAnchor.constraint(equalTo: topContainter.centerXAnchor).isActive = true
+        lblCurriculum.topAnchor.constraint(equalTo: profilePicView.centerYAnchor).isActive = true
+        lblCurriculum.heightAnchor.constraint(equalToConstant: 20).isActive = true
+        lblCurriculum.leadingAnchor.constraint(equalTo: topContainter.leadingAnchor).isActive = true
+        lblCurriculum.trailingAnchor.constraint(equalTo: profilePicView.leadingAnchor).isActive = true
+        
+        curriculumPickerText.topAnchor.constraint(equalTo: lblCurriculum.bottomAnchor).isActive = true
+        curriculumPickerText.heightAnchor.constraint(equalToConstant: 20).isActive = true
+        curriculumPickerText.leadingAnchor.constraint(equalTo: topContainter.leadingAnchor).isActive = true
+        curriculumPickerText.trailingAnchor.constraint(equalTo: profilePicView.leadingAnchor).isActive = true
+        
         let stackViewNameWalletCorrection = UIStackView(arrangedSubviews: [lblWallet, lblNameSurname, lblCorrectionPoints])
         
         topContainter.addSubview(stackViewNameWalletCorrection)
