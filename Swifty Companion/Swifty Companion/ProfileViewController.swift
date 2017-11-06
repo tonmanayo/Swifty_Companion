@@ -10,8 +10,6 @@ import UIKit
 
 class ProfileViewController: UIViewController, UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
 
-
-    
     var userData:User? {
         didSet {
             navigationItem.title = userData?.login
@@ -19,11 +17,31 @@ class ProfileViewController: UIViewController, UICollectionViewDataSource, UICol
             lblNameSurname.text = (userData?.firstName)! + " " + (userData?.lastName)!
             lblWallet.text = "Wallet: " + String(format: "%.0f", (userData?.wallet)!)
             lblCorrectionPoints.text = "Correction points: " + String(format: "%.0f", (userData?.correctionPoints)!)
+            collectionView.reloadData()
+            
+            
+            var basicInfo:[(key: Int,projectName: String, validated: Double, mark: Double)] = []
+
+            for project in (userData?.project)! {
+                if (project.parentID == Double(0)) {
+                    
+                    let index = project.curriculumID![0] as! Int
+                    basicInfo.append((key: index, projectName: project.name, validated: project.validated, mark: project.mark))
+                    //test[project.curriculumID[0]] =
+                }
+            }
+            print("basic Info")
+            for info in basicInfo {
+                if (info.key == Int(11)) {
+                    print (info)
+                }
+            }
         }
     }
     
     let cellID = "cell"
-    
+    let titles = ["Home", "Projects", "Skills"]
+
     let loading :UIActivityIndicatorView = {
         let activityIndicator = UIActivityIndicatorView(activityIndicatorStyle: UIActivityIndicatorViewStyle.gray)
         activityIndicator.hidesWhenStopped = true
@@ -34,12 +52,15 @@ class ProfileViewController: UIViewController, UICollectionViewDataSource, UICol
     
     lazy var collectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
+        layout.scrollDirection = .horizontal
+        layout.minimumLineSpacing = 0
         let cv = UICollectionView(frame: .zero, collectionViewLayout: layout)
         cv.translatesAutoresizingMaskIntoConstraints = false
-        cv.backgroundColor = UIColor.red
         cv.dataSource = self
         cv.delegate = self
-        cv.register(UICollectionViewCell.self, forCellWithReuseIdentifier: self.cellID)
+        cv.register(FeedCell.self, forCellWithReuseIdentifier: self.cellID)
+        cv.isPagingEnabled = true
+        
         return cv
     }()
     
@@ -105,22 +126,27 @@ class ProfileViewController: UIViewController, UICollectionViewDataSource, UICol
     let topContainter: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = UIColor.blue
+       
         return view
     }()
-
     
-    let menuBar: MenuBar = {
+    lazy var menuBar: MenuBar = {
         let mb = MenuBar()
         mb.translatesAutoresizingMaskIntoConstraints = false
+        mb.profileViewController = self
         return mb
     }()
     
     override func viewDidLoad() {
         super.viewDidLoad()
-       
         setupLayout()
 
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellID, for: indexPath as IndexPath) as! FeedCell
+        cell.profileViewController = self
+        return cell
     }
     
     override func updateViewConstraints() {
@@ -130,7 +156,35 @@ class ProfileViewController: UIViewController, UICollectionViewDataSource, UICol
     override func viewWillLayoutSubviews() {
         super.viewWillLayoutSubviews()
         menuBar.collectionView.collectionViewLayout.invalidateLayout()
-        collectionView.collectionViewLayout.invalidateLayout() //here123
+        collectionView.collectionViewLayout.invalidateLayout()
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        return CGSize(width: collectionView.frame.width, height: collectionView.frame.height)
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return 3
+    }
+    
+    func scrollViewDidScroll(_ scrollView: UIScrollView) {
+        menuBar.sliderPosition?.constant = scrollView.contentOffset.x / 3
+    }
+    
+    func scrollToMenuIndex(menuIndex: Int) {
+        let indexPath = IndexPath(row: menuIndex, section: 0)
+        collectionView.scrollToItem(at: indexPath, at: [], animated: true)
+        setTitle(index: menuIndex)
+    }
+    
+    func scrollViewWillEndDragging(_ scrollView: UIScrollView, withVelocity velocity: CGPoint, targetContentOffset: UnsafeMutablePointer<CGPoint>) {
+        let indexPath = IndexPath(item: Int(targetContentOffset.pointee.x / view.frame.width), section: 0)
+        menuBar.collectionView.selectItem(at: indexPath, animated: true, scrollPosition: [])
+        setTitle(index: Int(targetContentOffset.pointee.x / view.frame.width))
+    }
+    
+    private func setTitle(index: Int) {
+        navigationItem.title = titles[index]
     }
     
     private func setupLayout(){
@@ -186,28 +240,6 @@ class ProfileViewController: UIViewController, UICollectionViewDataSource, UICol
         collectionView.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: 0.6).isActive = true
         
     }
-    
-    // MARK: - UICollectionViewDataSource protocol
-   func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 3
-    }
-    
-   func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellID, for: indexPath as IndexPath)
-        cell.backgroundColor = UIColor.cyan
-        return cell
-    }
-    
-//    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-//        // handle tap events
-//        print("You selected cell #\(indexPath.item)!")
-//    }
-    
-//    internal func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-//        //return CGSizeMake(view.frame.width, 200)
-//        return CGSize(width: view.frame.width, height: 200)
-//    }
-    
 
     // MARK - fetch image
     var profilePicURL:URL? {

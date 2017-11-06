@@ -28,6 +28,8 @@ class MenuBar : UIView, UICollectionViewDataSource, UICollectionViewDelegate, UI
         return bar
     }()
     
+    var profileViewController:ProfileViewController?
+    
     let imageNames = ["home","account","stats"]
     let cellID = "Cell"
     
@@ -38,7 +40,6 @@ class MenuBar : UIView, UICollectionViewDataSource, UICollectionViewDelegate, UI
         collectionView.register(MenuBarCell.self, forCellWithReuseIdentifier: cellID)
         
         setupLayout()
-        
         let indexPath = IndexPath(row: 0, section: 0)
         collectionView.selectItem(at: indexPath, animated: false, scrollPosition: [])
     }
@@ -65,13 +66,8 @@ class MenuBar : UIView, UICollectionViewDataSource, UICollectionViewDelegate, UI
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        let x = CGFloat(indexPath.item) * frame.width / 3
-        sliderPosition?.constant = x
-        UIView.animate(withDuration: 0.75, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 1, options: .curveEaseOut, animations: { 
-            self.layoutIfNeeded()
-        }, completion: nil)
+        profileViewController?.scrollToMenuIndex(menuIndex: indexPath.item)
     }
-    
     
     private func setupLayout() {
         addSubview(collectionView)
@@ -133,8 +129,6 @@ class MenuBarCell: BaseCell {
         imageView.translatesAutoresizingMaskIntoConstraints = false
         imageView.centerXAnchor.constraint(equalTo: self.centerXAnchor).isActive = true
         imageView.centerYAnchor.constraint(equalTo: self.centerYAnchor).isActive = true
-        //imageView.trailingAnchor.constraint(equalTo: self.trailingAnchor)
-        //imageView.leadingAnchor.constraint(equalTo: self.leadingAnchor)
     }
     
 }

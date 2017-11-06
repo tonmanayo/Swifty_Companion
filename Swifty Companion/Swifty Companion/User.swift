@@ -14,10 +14,11 @@ struct User {
         var name: String
         var parentID: Double
         var ID: Double
-        var curriculumID: Double
+        var curriculumID: NSArray?
         var mark: Double
         var status: String
         var validated: Double
+        var retries: Double
     }
     
     let ID: Double
@@ -78,14 +79,17 @@ struct User {
         let cursesUsers = data?.arrayForKeyPath(IntraKey.cursusUsers)
         let userProjects = data?.value(forKeyPath: IntraKey.userProjects) as! [NSDictionary]
         
+        print(userProjects)
+        
         for var i in 0..<userProjects.count {
             let tmpProject:Projects = Projects(name: (userProjects[i].value(forKeyPath: "project") as? NSDictionary ?? nil)?.value(forKeyPath: "name") as? String ?? "",
                                                parentID: (userProjects[i].value(forKeyPath: "project") as? NSDictionary ?? nil)?.value(forKeyPath: "parent_id") as? Double ?? 0,
                                                ID: (userProjects[i].value(forKeyPath: "project") as? NSDictionary ?? nil)?.value(forKeyPath: "id") as? Double ?? 0,
-                                               curriculumID: userProjects[i].value(forKeyPath: "cursus_ids") as? Double ?? 0,
+                                               curriculumID: userProjects[i].value(forKeyPath: "cursus_ids") as? NSArray ?? nil,
                                                mark: userProjects[i].value(forKeyPath: "final_mark") as? Double ?? 0,
                                                status: userProjects[i].value(forKeyPath: "status") as? String ?? "",
-                                               validated: userProjects[i].value(forKeyPath: "validated?") as? Double ?? 0)
+                                               validated: userProjects[i].value(forKeyPath: "validated?") as? Double ?? 0,
+                                               retries: userProjects[i].value(forKeyPath: "occurrence") as? Double ?? 0)
             self.project.append(tmpProject)
             i += 1
         }
@@ -101,7 +105,6 @@ struct User {
         self.correctionPoints = correctionPoints
         self.cursesUsers = cursesUsers!
         self.campusName = campusName
-        
         self.profilePicture = profilePicture
 
            }

@@ -81,9 +81,6 @@ class ViewController: UIViewController, UserControlDelegate, UITableViewDelegate
                         return
                     }
                     self?.userNames = responseObject!
-                    for name in responseObject! {
-                        print(name.userLogin)
-                    }
                     DispatchQueue.main.async {
                          self?.tableView.reloadData()
                     }
@@ -116,8 +113,8 @@ class ViewController: UIViewController, UserControlDelegate, UITableViewDelegate
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell     {
         let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath) as? CustomTableViewCell
         if (userNames?.isEmpty == false) {
-        cell?.lblUserName.text = self.userNames![indexPath.row].userLogin
-    }
+            cell?.lblUserName.text = self.userNames![indexPath.row].userLogin
+        }
         return cell!
     }
     
@@ -136,6 +133,9 @@ class ViewController: UIViewController, UserControlDelegate, UITableViewDelegate
                     }
                 self?.userData = User(data: responseObject as NSDictionary?)!
                 profileViewController.userData = self?.userData
+                DispatchQueue.main.async {
+                    profileViewController.collectionView.reloadData()
+                }
                 if (self?.userData?.profilePicture?.absoluteString == "https://cdn.intra.42.fr/images/default.png") {
                     profileViewController.profilePicURL =  URL(string: "http://clipart-library.com/image_gallery/267356.png")
                 } else {
@@ -148,9 +148,9 @@ class ViewController: UIViewController, UserControlDelegate, UITableViewDelegate
     
     func displayUserInfo(user: User?, curriculum: Curriculum?) {
         
-        let x:Double = (curriculum?.level)!.truncatingRemainder(dividingBy: 1)
+    //    let x:Double = (curriculum?.level)!.truncatingRemainder(dividingBy: 1)
         
-        print(x)
+       // print(x)
 
 //		print(user!.login)
 //        print(user!.firstName)
