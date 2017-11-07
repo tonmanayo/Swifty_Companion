@@ -37,7 +37,6 @@ class ProfileViewController: UIViewController,
             for curriculem in (userData?.cursesUsers)! {
                 let currentCurric = Curriculum(data: curriculem as? NSDictionary)
                 curriculemNames.append((currentCurric?.curriculumName)!)
-                
             }
             
             curriculumPickerText.text = curriculemNames[0]
@@ -210,8 +209,10 @@ class ProfileViewController: UIViewController,
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         if (indexPath.row == 1) {
             let cell = collectionView.dequeueReusableCell(withReuseIdentifier: projectCellID, for: indexPath as IndexPath) as! ProjectCells
-            cell.profileViewController = self
-            return cell
+            if let project = userData?.project {
+                cell.projects = project
+                return cell
+            }
         }
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellID, for: indexPath as IndexPath) as! FeedCell
         cell.profileViewController = self
