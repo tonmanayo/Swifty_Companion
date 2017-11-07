@@ -14,6 +14,7 @@ class ProfileViewController: UIViewController,
 
     var curriculemNames:[String] = []
     var selectedCurriculem: Int = 0
+    var skills: [Curriculum.eSkills] = []
     var userData:User? {
         didSet {
             navigationItem.title = userData?.login
@@ -38,7 +39,7 @@ class ProfileViewController: UIViewController,
                 let currentCurric = Curriculum(data: curriculem as? NSDictionary)
                 curriculemNames.append((currentCurric?.curriculumName)!)
             }
-            
+            skills = (curr?.skill)!
             curriculumPickerText.text = curriculemNames[0]
             progressBar.progress = Float((curr?.level)!.truncatingRemainder(dividingBy: 1))
             self.curriculumPicker.reloadAllComponents()
@@ -50,6 +51,7 @@ class ProfileViewController: UIViewController,
     
     let cellID = "cell"
     let projectCellID = "projectCellID"
+    let statsCellID = "statsCellID"
     let titles = ["Home", "Projects", "Skills"]
 
     let loading :UIActivityIndicatorView = {
@@ -70,6 +72,7 @@ class ProfileViewController: UIViewController,
         cv.delegate = self
         cv.register(FeedCell.self, forCellWithReuseIdentifier: self.cellID)
         cv.register(ProjectCells.self, forCellWithReuseIdentifier: self.projectCellID)
+        cv.register(StatsCells.self, forCellWithReuseIdentifier: self.statsCellID)
 
         cv.isPagingEnabled = true
         
@@ -213,6 +216,12 @@ class ProfileViewController: UIViewController,
                 cell.projects = project
                 return cell
             }
+        } else if indexPath.row == 2 {
+            let cell = collectionView.dequeueReusableCell(withReuseIdentifier: statsCellID, for: indexPath as IndexPath) as! StatsCells
+            if skills.isEmpty == false {
+                cell.skills = skills
+            }
+            return cell
         }
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellID, for: indexPath as IndexPath) as! FeedCell
         cell.profileViewController = self

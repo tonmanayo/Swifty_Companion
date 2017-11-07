@@ -18,6 +18,7 @@
 		33E0413B1FB05F5D0099E952 /* ProjectCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33E0413A1FB05F5D0099E952 /* ProjectCell.swift */; };
 		33EF69F71F9A1EBB00E1A9B0 /* SearchUsers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 33EF69F61F9A1EBB00E1A9B0 /* SearchUsers.swift */; };
 		443659F8B832090DD868BD0B /* Pods_Swifty_Companion.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 71F4F69C11C94F850E339C61 /* Pods_Swifty_Companion.framework */; };
+		FA08B1471FB254F800F34A77 /* StatsCells.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA08B1461FB254F800F34A77 /* StatsCells.swift */; };
 		FA686F411FAC63F80014C76A /* FeedCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA686F401FAC63F80014C76A /* FeedCell.swift */; };
 		FA686F431FAC70F80014C76A /* HomeCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA686F421FAC70F80014C76A /* HomeCell.swift */; };
 		FA6CC3A71F9CA55F00F18B04 /* CustomTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA6CC3A61F9CA55F00F18B04 /* CustomTableViewCell.swift */; };
@@ -43,6 +44,7 @@
 		4D1B955BBF5E69E6E2405B45 /* Pods-Swifty Companion.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Swifty Companion.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Swifty Companion/Pods-Swifty Companion.debug.xcconfig"; sourceTree = "<group>"; };
 		71F4F69C11C94F850E339C61 /* Pods_Swifty_Companion.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Swifty_Companion.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		C0384ADE263075DB607505AC /* Pods-Swifty Companion.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Swifty Companion.release.xcconfig"; path = "Pods/Target Support Files/Pods-Swifty Companion/Pods-Swifty Companion.release.xcconfig"; sourceTree = "<group>"; };
+		FA08B1461FB254F800F34A77 /* StatsCells.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatsCells.swift; sourceTree = "<group>"; };
 		FA686F401FAC63F80014C76A /* FeedCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FeedCell.swift; sourceTree = "<group>"; };
 		FA686F421FAC70F80014C76A /* HomeCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeCell.swift; sourceTree = "<group>"; };
 		FA6CC3A61F9CA55F00F18B04 /* CustomTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTableViewCell.swift; sourceTree = "<group>"; };
@@ -119,6 +121,7 @@
 				FA686F421FAC70F80014C76A /* HomeCell.swift */,
 				33E041381FB054820099E952 /* ProjectCells.swift */,
 				33E0413A1FB05F5D0099E952 /* ProjectCell.swift */,
+				FA08B1461FB254F800F34A77 /* StatsCells.swift */,
 			);
 			name = View;
 			sourceTree = "<group>";
@@ -226,11 +229,13 @@
 			inputPaths = (
 				"${SRCROOT}/Pods/Target Support Files/Pods-Swifty Companion/Pods-Swifty Companion-frameworks.sh",
 				"${BUILT_PRODUCTS_DIR}/Alamofire/Alamofire.framework",
+				"${BUILT_PRODUCTS_DIR}/DDSpiderChart/DDSpiderChart.framework",
 				"${BUILT_PRODUCTS_DIR}/SwiftyJSON/SwiftyJSON.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputPaths = (
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/Alamofire.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/DDSpiderChart.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/SwiftyJSON.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -272,6 +277,7 @@
 				FA686F411FAC63F80014C76A /* FeedCell.swift in Sources */,
 				3354EAB11FA770DB003D6C7E /* MenuBar.swift in Sources */,
 				33EF69F71F9A1EBB00E1A9B0 /* SearchUsers.swift in Sources */,
+				FA08B1471FB254F800F34A77 /* StatsCells.swift in Sources */,
 				0102C3971F94C6530065E4D5 /* AppDelegate.swift in Sources */,
 				FAF276501F9D2E4100211341 /* ProfileViewController.swift in Sources */,
 				FA7E73F91F9694EA008BD45A /* Curriculum.swift in Sources */,

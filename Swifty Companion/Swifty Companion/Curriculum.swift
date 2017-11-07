@@ -13,7 +13,7 @@ import UIKit
 struct Curriculum {
     
     struct eSkills {
-        var level: Double
+        var level: Float
         var name: String
     }
 
@@ -34,7 +34,7 @@ struct Curriculum {
         let skills = data?.value(forKeyPath: IntraSkillsKey.skills) as! [NSDictionary]
         
         for var i in 0..<skills.count{
-            let new:eSkills = eSkills(level: skills[i].value(forKey: "level") as? Double ?? 0, name: skills[i].value(forKey: "name") as? String ?? "")
+            let new:eSkills = eSkills(level: skills[i].value(forKey: "level") as? Float ?? 0, name: skills[i].value(forKey: "name") as? String ?? "")
             self.skill.append(new)
          i += 1
         }
