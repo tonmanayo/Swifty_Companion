@@ -22,30 +22,19 @@ class ProfileViewController: UIViewController,
             lblNameSurname.text = (userData?.firstName)! + " " + (userData?.lastName)!
             lblWallet.text = "Wallet: " + String(format: "%.0f", (userData?.wallet)!)
             lblCorrectionPoints.text = "Correction points: " + String(format: "%.0f", (userData?.correctionPoints)!)
-            collectionView.reloadData()
             
-            var basicInfo:[(key: Int,projectName: String, validated: Double, mark: Double)] = []
-
-            for project in (userData?.project)! {
-                if (project.parentID == Double(0)) {
-                    
-                    let index = project.curriculumID![0] as! Int
-                    basicInfo.append((key: index, projectName: project.name, validated: project.validated, mark: project.mark))
-                    //test[project.curriculumID[0]] =
-                }
-            }
             let curr = Curriculum(data: userData?.cursesUsers[0] as! NSDictionary?)
             for curriculem in (userData?.cursesUsers)! {
-                let currentCurric = Curriculum(data: curriculem as? NSDictionary)
-                curriculemNames.append((currentCurric?.curriculumName)!)
+                if  let currentCurric = Curriculum(data: curriculem as? NSDictionary) {
+                    curriculemNames.append(currentCurric.curriculumName)
+                }
             }
             skills = (curr?.skill)!
             curriculumPickerText.text = curriculemNames[0]
             progressBar.progress = Float((curr?.level)!.truncatingRemainder(dividingBy: 1))
-            self.curriculumPicker.reloadAllComponents()
-            self.curriculumPickerText.reloadInputViews()
-            lblLevel.text = "Level \(String(format: "%.0f", (curr?.level)!))"
             
+            lblLevel.text = "Level \(String(format: "%.0f", (curr?.level)!))"
+            collectionView.reloadData()
         }
     }
     

@@ -24,6 +24,8 @@ class StatsCells:BaseCell {
                 }
                 spiderChartView.axes = names
                 spiderChartView.addDataSet(values: level, color: .red)
+                self.reloadInputViews()
+                spiderChartView.reloadInputViews()
                 check = true
             }
         }
@@ -32,7 +34,8 @@ class StatsCells:BaseCell {
     lazy var spiderChartView:DDSpiderChartView = {
         let chart = DDSpiderChartView(frame: self.frame)
         chart.circleCount = 4
-        chart.circleGap = 30
+        chart.circleGap = ((self.frame.width - 40) / 2) / 8
+        print (self.frame.width - 40)
         chart.backgroundColor = .white
         
         chart.translatesAutoresizingMaskIntoConstraints = false
@@ -47,8 +50,8 @@ class StatsCells:BaseCell {
         
         spiderChartView.centerXAnchor.constraint(equalTo: self.centerXAnchor).isActive = true
         spiderChartView.centerYAnchor.constraint(equalTo: self.centerYAnchor).isActive = true
-        spiderChartView.heightAnchor.constraint(equalTo: self.widthAnchor, multiplier: 1.0).isActive = true
-        spiderChartView.widthAnchor.constraint(equalTo: self.widthAnchor, multiplier: 1.0).isActive = true
+        spiderChartView.heightAnchor.constraint(equalTo: self.widthAnchor, multiplier: 1).isActive = true
+        spiderChartView.widthAnchor.constraint(equalTo: self.widthAnchor, multiplier: 1).isActive = true
         
     }
 }
