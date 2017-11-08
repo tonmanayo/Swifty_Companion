@@ -47,8 +47,8 @@ class StatsCells:BaseCell {
         
         spiderChartView.centerXAnchor.constraint(equalTo: self.centerXAnchor).isActive = true
         spiderChartView.centerYAnchor.constraint(equalTo: self.centerYAnchor).isActive = true
-        spiderChartView.heightAnchor.constraint(equalTo: self.widthAnchor, multiplier: 0.8).isActive = true
-        spiderChartView.widthAnchor.constraint(equalTo: self.widthAnchor, multiplier: 0.8).isActive = true
+        spiderChartView.heightAnchor.constraint(equalTo: self.widthAnchor, multiplier: 1.0).isActive = true
+        spiderChartView.widthAnchor.constraint(equalTo: self.widthAnchor, multiplier: 1.0).isActive = true
         
     }
 }
