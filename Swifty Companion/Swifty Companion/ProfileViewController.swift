@@ -22,30 +22,19 @@ class ProfileViewController: UIViewController,
             lblNameSurname.text = (userData?.firstName)! + " " + (userData?.lastName)!
             lblWallet.text = "Wallet: " + String(format: "%.0f", (userData?.wallet)!)
             lblCorrectionPoints.text = "Correction points: " + String(format: "%.0f", (userData?.correctionPoints)!)
-            collectionView.reloadData()
             
-            var basicInfo:[(key: Int,projectName: String, validated: Double, mark: Double)] = []
-
-            for project in (userData?.project)! {
-                if (project.parentID == Double(0)) {
-                    
-                    let index = project.curriculumID![0] as! Int
-                    basicInfo.append((key: index, projectName: project.name, validated: project.validated, mark: project.mark))
-                    //test[project.curriculumID[0]] =
-                }
-            }
             let curr = Curriculum(data: userData?.cursesUsers[0] as! NSDictionary?)
             for curriculem in (userData?.cursesUsers)! {
-                let currentCurric = Curriculum(data: curriculem as? NSDictionary)
-                curriculemNames.append((currentCurric?.curriculumName)!)
+                if  let currentCurric = Curriculum(data: curriculem as? NSDictionary) {
+                    curriculemNames.append(currentCurric.curriculumName)
+                }
             }
             skills = (curr?.skill)!
             curriculumPickerText.text = curriculemNames[0]
             progressBar.progress = Float((curr?.level)!.truncatingRemainder(dividingBy: 1))
-            self.curriculumPicker.reloadAllComponents()
-            self.curriculumPickerText.reloadInputViews()
             lblLevel.text = "Level \(String(format: "%.0f", (curr?.level)!))"
             
+            collectionView.reloadData()
         }
     }
     
@@ -56,6 +45,7 @@ class ProfileViewController: UIViewController,
 
     let loading :UIActivityIndicatorView = {
         let activityIndicator = UIActivityIndicatorView(activityIndicatorStyle: UIActivityIndicatorViewStyle.gray)
+        
         activityIndicator.hidesWhenStopped = true
         activityIndicator.translatesAutoresizingMaskIntoConstraints = false
         activityIndicator.color = UIColor.blue
@@ -64,6 +54,7 @@ class ProfileViewController: UIViewController,
     
     lazy var collectionView: UICollectionView = {
         let layout = UICollectionViewFlowLayout()
+        
         layout.scrollDirection = .horizontal
         layout.minimumLineSpacing = 0
         let cv = UICollectionView(frame: .zero, collectionViewLayout: layout)
@@ -73,14 +64,13 @@ class ProfileViewController: UIViewController,
         cv.register(FeedCell.self, forCellWithReuseIdentifier: self.cellID)
         cv.register(ProjectCells.self, forCellWithReuseIdentifier: self.projectCellID)
         cv.register(StatsCells.self, forCellWithReuseIdentifier: self.statsCellID)
-
         cv.isPagingEnabled = true
-        
         return cv
     }()
     
     let lblWallet: UILabel = {
         let wallet = UILabel(frame: CGRect.zero)
+        
         wallet.textAlignment = .center
         wallet.text = "Wallet"
         wallet.font = UIFont.systemFont(ofSize: 12)
@@ -91,6 +81,7 @@ class ProfileViewController: UIViewController,
     
     let lblCorrectionPoints: UILabel = {
         let correctionPoints = UILabel(frame: CGRect.zero)
+        
         correctionPoints.textAlignment = .center
         correctionPoints.text = "Correction Points: "
         correctionPoints.font = UIFont.boldSystemFont(ofSize: 12)
@@ -102,6 +93,7 @@ class ProfileViewController: UIViewController,
     
     let lblCurriculum: UILabel = {
         let curriculum = UILabel(frame: CGRect.zero)
+        
         curriculum.textAlignment = .center
         curriculum.text = "Curriculum"
         curriculum.font = UIFont.boldSystemFont(ofSize: 12)
@@ -113,6 +105,7 @@ class ProfileViewController: UIViewController,
     
     let profilePicView: CustomUIImageView = {
         let imageView = CustomUIImageView(image: #imageLiteral(resourceName: "loading"))
+        
         imageView.translatesAutoresizingMaskIntoConstraints = false
         imageView.contentMode = .scaleAspectFill
         imageView.layer.masksToBounds = true
@@ -121,15 +114,16 @@ class ProfileViewController: UIViewController,
     
     let coverImage: UIImageView = {
         let coverView = UIImageView(image: #imageLiteral(resourceName: "code-guide-callout"))
+        
         coverView.translatesAutoresizingMaskIntoConstraints = false
         coverView.contentMode = .scaleAspectFill
         coverView.layer.masksToBounds = true
-        
         return coverView
     }()
     
     let lblNameSurname: UILabel = {
         let nameSurname = UILabel(frame: CGRect.zero)
+        
         nameSurname.textAlignment = .center
         nameSurname.text = "userName"
         nameSurname.font = UIFont.boldSystemFont(ofSize: 20)
@@ -151,13 +145,14 @@ class ProfileViewController: UIViewController,
     
     let topContainter: UIView = {
         let view = UIView()
+        
         view.translatesAutoresizingMaskIntoConstraints = false
-       
         return view
     }()
     
     lazy var menuBar: MenuBar = {
         let mb = MenuBar()
+        
         mb.translatesAutoresizingMaskIntoConstraints = false
         mb.profileViewController = self
         return mb
@@ -165,26 +160,27 @@ class ProfileViewController: UIViewController,
     
     lazy var curriculumPicker: UIPickerView = {
         let picker = UIPickerView()
+        
         picker.dataSource = self
         picker.delegate = self
         picker.backgroundColor = .white
         return picker
     }()
     
-    lazy var curriculumPickerText: UITextField = {
+    let curriculumPickerText: UITextField = {
         let text = UITextField()
         
         text.textAlignment = .center
         text.font = UIFont.boldSystemFont(ofSize: 12)
         text.adjustsFontSizeToFitWidth = true
         text.textColor = UIColor.gray
-
         text.translatesAutoresizingMaskIntoConstraints = false
         return text
     }()
     
-    var progressBar: CustomProgressView = {
+    let progressBar: CustomProgressView = {
         let bar = CustomProgressView()
+        
         bar.height = 10.0
         bar.translatesAutoresizingMaskIntoConstraints = false
         bar.progress = 0.0
@@ -193,6 +189,7 @@ class ProfileViewController: UIViewController,
     
     let lblLevel: UILabel = {
         let level = UILabel(frame: CGRect.zero)
+        
         level.textAlignment = .center
         level.text = "Level: "
         level.font = UIFont.boldSystemFont(ofSize: 10)
@@ -226,8 +223,6 @@ class ProfileViewController: UIViewController,
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellID, for: indexPath as IndexPath) as! FeedCell
         cell.profileViewController = self
         return cell
-       
-        
     }
     
     override func updateViewConstraints() {
@@ -292,7 +287,6 @@ class ProfileViewController: UIViewController,
         self.view.endEditing(true)
     }
     
-    
     private func setupLayout(){
         
         view.addSubview(topContainter)
@@ -318,7 +312,6 @@ class ProfileViewController: UIViewController,
         profilePicView.heightAnchor.constraint(equalTo: topContainter.heightAnchor, multiplier: 0.5).isActive = true
         profilePicView.widthAnchor.constraint(equalTo: topContainter.heightAnchor, multiplier: 0.5).isActive = true
         
-        //lblCurriculum.centerXAnchor.constraint(equalTo: topContainter.centerXAnchor).isActive = true
         lblCurriculum.topAnchor.constraint(equalTo: profilePicView.centerYAnchor).isActive = true
         lblCurriculum.heightAnchor.constraint(equalToConstant: 20).isActive = true
         lblCurriculum.leadingAnchor.constraint(equalTo: topContainter.leadingAnchor).isActive = true
@@ -333,7 +326,10 @@ class ProfileViewController: UIViewController,
         
         topContainter.addSubview(stackViewNameWalletCorrection)
        
-        loading.center = profilePicView.center
+        loading.centerXAnchor.constraint(equalTo: profilePicView.centerXAnchor).isActive = true
+        loading.centerYAnchor.constraint(equalTo: profilePicView.centerYAnchor).isActive = true
+        loading.widthAnchor.constraint(equalTo: profilePicView.widthAnchor).isActive = true
+        loading.heightAnchor.constraint(equalTo: profilePicView.heightAnchor).isActive = true
         
         stackViewNameWalletCorrection.translatesAutoresizingMaskIntoConstraints = false
         stackViewNameWalletCorrection.distribution = .fillEqually
@@ -356,7 +352,6 @@ class ProfileViewController: UIViewController,
         lblLevel.heightAnchor.constraint(equalToConstant: 10).isActive = true
         lblLevel.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
         lblLevel.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
-        
         
         topContainter.addSubview(menuBar)
         

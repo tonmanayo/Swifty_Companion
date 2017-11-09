@@ -10,7 +10,6 @@ import UIKit
 import Alamofire
 
 class ViewController: UIViewController,
-UserControlDelegate,
 UITableViewDelegate,
 UITableViewDataSource,
 UISearchResultsUpdating,
@@ -18,9 +17,7 @@ UISearchBarDelegate,
 UISplitViewControllerDelegate
 {
     
-
 	var apiController : APIController?
-    
     var userNames:[SearchUsers]? = []
     var userData:User? = User()
     var shouldShowSearchResults:Bool = false
@@ -33,25 +30,9 @@ UISplitViewControllerDelegate
         self.splitViewController?.delegate = self
     }
     
-//    func splitViewController(
-//        _ splitViewController: UISplitViewController,
-//        collapseSecondary secondaryViewController: UIViewController,
-//        onto primaryViewController: UIViewController) -> Bool
-//    {
-//        if primaryViewController.contents == self,
-//            let ivc = secondaryViewController.contents as? ProfileViewController
-//        {
-//            return ivc.profilePicURL == nil
-//        }
-//        return false
-//    }
-
     let searchController: UISearchController = {
         let searchController = UISearchController(searchResultsController: nil)
-       
         searchController.searchBar.barTintColor = UIColor(red: 95 / 255, green: 111 / 255, blue: 111 / 255, alpha: 1)
-
-        //searchController.searchBar.translatesAutoresizingMaskIntoConstraints = false
         return searchController
     }()
     
@@ -67,17 +48,13 @@ UISplitViewControllerDelegate
 	override func viewDidLoad() {
 		super.viewDidLoad()
         navigationItem.title = "Search for username"
-       // UINavigationBar.appearance().backgroundColor = UIColor(red: 95 / 255, green: 111 / 255, blue: 111 / 255, alpha: 1)
         navigationController?.navigationBar.barTintColor = UIColor(red: 176 / 255, green: 192 / 255, blue: 207 / 255, alpha: 1)
 
-        
-		apiController = APIController.init(delegate: self)
+		apiController = APIController.init()
         configureSearchController()
 
         navigationController?.hidesBarsOnSwipe = true
     }
-    
-    
     
     func updateSearchResults(for searchController: UISearchController) {
         if let searchText = searchController.searchBar.text {
@@ -95,18 +72,16 @@ UISplitViewControllerDelegate
             }
         }
     }
-    
+    // MARK: - searchBar
     public func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
         shouldShowSearchResults = true
         tableView.reloadData()
     }
     
-    
     public func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
         shouldShowSearchResults = false
         tableView.reloadData()
     }
-    
     
     // MARK: - Table View
     func numberOfSections(in tableView: UITableView) -> Int {
@@ -130,6 +105,7 @@ UISplitViewControllerDelegate
         searchController.isActive = false
     }
     
+    // MARK: - Segway
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         userIndex = (tableView.indexPathForSelectedRow?.row)!
         if let profileViewController = segue.destination.contents as? ProfileViewController {
@@ -151,41 +127,6 @@ UISplitViewControllerDelegate
             }
         }
     }
-    
-    
-    func displayUserInfo(user: User?, curriculum: Curriculum?) {
-        
-    //    let x:Double = (curriculum?.level)!.truncatingRemainder(dividingBy: 1)
-        
-       // print(x)
-
-//		print(user!.login)
-//        print(user!.firstName)
-//        print(user!.lastName)
-//        print(user!.wallet)
-//        print(user!.mobileNumber)
-//        print(user!.email)
-//        print(user!.correctionPoints)
-//       // print((user!.cursesUsers[1]))
-//        print(user!.campusName)
-//        print(curriculum!.skill[0].name)
-//         print(curriculum!.skill[0].level)
-//        print(curriculum!.curriculumName)
-//        print(curriculum!.level)
-//  
-//        for project in user!.project {
-//            if (project.ID == 48.0) {
-//                print(project.name)
-//            }
-//            if (project.parentID == Double(48.0)) {
-//                print(project.name)
-//                print(project.mark)
-//            }
-//        }
-       // print((user!.cursesUsers[0] as! NSDictionary).value(forKey: "cursus_id")!)
-        // print(((user!.cursesUsers[1] as! NSDictionary).value(forKey: "cursus")! as! NSDictionary).value(forKey: "name")! as! String)
-        
-	}
 }
 
 extension UIViewController {
