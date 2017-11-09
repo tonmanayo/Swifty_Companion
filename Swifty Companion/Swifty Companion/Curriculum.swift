@@ -33,25 +33,21 @@ struct Curriculum {
         let curriculumName = (data?.value(forKeyPath: "cursus") as? NSDictionary ?? nil)?.value(forKeyPath: IntraSkillsKey.curriculumName) as? String ?? ""
         let skills = data?.value(forKeyPath: IntraSkillsKey.skills) as! [NSDictionary]
         
-        for var i in 0..<skills.count{
-            let new:eSkills = eSkills(level: skills[i].value(forKey: "level") as? Float ?? 0, name: skills[i].value(forKey: "name") as? String ?? "")
+        for lSkill in skills{
+            let new:eSkills = eSkills(level: lSkill.value(forKey: "level") as? Float ?? 0, name: lSkill.value(forKey: "name") as? String ?? "")
             self.skill.append(new)
-         i += 1
         }
         
         self.level = level
         self.curriculumName = curriculumName
         self.skills = skills
-        
         self.curriculumID = curriculumID
     }
     
     struct IntraSkillsKey {
-
         static let curriculumID = "cursus_id"
         static let curriculumName = "name"
         static let skills = "skills"
         static let level = "level"
-
     }
 }

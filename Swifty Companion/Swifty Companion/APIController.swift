@@ -15,10 +15,8 @@ class APIController {
 	var UID = "b5111590238005620faa8822ec94afebafe701b55e1732d429e1ce8cd774d158"
 	var SECRET = "c59bd03db892b101ed77ce8e6f9b0668c8ff133d406d6c1fd60676afb9b46c28"
 	var token: String?
-	weak var delegate: UserControlDelegate?
 	
-	init(delegate: UserControlDelegate) {
-		self.delegate = delegate
+	init() {
 		self.getToken()
 	}
 	

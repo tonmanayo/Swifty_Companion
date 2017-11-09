@@ -34,9 +34,7 @@ struct User {
     let campusName: String
     
     var project: [Projects] = []
-    
     let cursesUsers: NSArray
-   // let userProjects: NSArray
 
     init (){
         self.ID = 0
@@ -59,7 +57,7 @@ struct User {
             let email = data?.value(forKeyPath: IntraKey.email) as? String
         else {
             return nil
-            }
+        }
         
         let firstName = data?.value(forKeyPath: IntraKey.firstName) as? String ?? ""
         let lastName = data?.value(forKeyPath: IntraKey.lastName) as? String ?? ""
@@ -75,23 +73,21 @@ struct User {
         let campus = data?.arrayForKeyPath("campus")
         let campusName = (campus![0] as? NSDictionary ?? nil)?.value(forKey: "name") as? String ?? ""
         
-        
         let cursesUsers = data?.arrayForKeyPath(IntraKey.cursusUsers)
         let userProjects = data?.value(forKeyPath: IntraKey.userProjects) as! [NSDictionary]
         
         print(userProjects)
         
-        for var i in 0..<userProjects.count {
-            let tmpProject:Projects = Projects(name: (userProjects[i].value(forKeyPath: "project") as? NSDictionary ?? nil)?.value(forKeyPath: "name") as? String ?? "",
-                                               parentID: (userProjects[i].value(forKeyPath: "project") as? NSDictionary ?? nil)?.value(forKeyPath: "parent_id") as? Double ?? 0,
-                                               ID: (userProjects[i].value(forKeyPath: "project") as? NSDictionary ?? nil)?.value(forKeyPath: "id") as? Double ?? 0,
-                                               curriculumID: userProjects[i].value(forKeyPath: "cursus_ids") as? NSArray ?? nil,
-                                               mark: userProjects[i].value(forKeyPath: "final_mark") as? Double ?? 0,
-                                               status: userProjects[i].value(forKeyPath: "status") as? String ?? "",
-                                               validated: userProjects[i].value(forKeyPath: "validated?") as? Double ?? 0,
-                                               retries: userProjects[i].value(forKeyPath: "occurrence") as? Double ?? 0)
+        for userProj in userProjects {
+            let tmpProject:Projects = Projects(name: (userProj.value(forKeyPath: "project") as? NSDictionary ?? nil)?.value(forKeyPath: "name") as? String ?? "",
+                                               parentID: (userProj.value(forKeyPath: "project") as? NSDictionary ?? nil)?.value(forKeyPath: "parent_id") as? Double ?? 0,
+                                               ID: (userProj.value(forKeyPath: "project") as? NSDictionary ?? nil)?.value(forKeyPath: "id") as? Double ?? 0,
+                                               curriculumID: userProj.value(forKeyPath: "cursus_ids") as? NSArray ?? nil,
+                                               mark: userProj.value(forKeyPath: "final_mark") as? Double ?? 0,
+                                               status: userProj.value(forKeyPath: "status") as? String ?? "",
+                                               validated: userProj.value(forKeyPath: "validated?") as? Double ?? 0,
+                                               retries: userProj.value(forKeyPath: "occurrence") as? Double ?? 0)
             self.project.append(tmpProject)
-            i += 1
         }
         
         self.ID = ID
@@ -106,8 +102,7 @@ struct User {
         self.cursesUsers = cursesUsers!
         self.campusName = campusName
         self.profilePicture = profilePicture
-
-           }
+       }
     
     struct IntraKey {
         static let ID = "id"

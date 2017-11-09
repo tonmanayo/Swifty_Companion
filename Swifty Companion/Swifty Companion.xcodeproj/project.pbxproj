@@ -24,7 +24,6 @@
 		FA6CC3A71F9CA55F00F18B04 /* CustomTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA6CC3A61F9CA55F00F18B04 /* CustomTableViewCell.swift */; };
 		FA7E73F71F9694CC008BD45A /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA7E73F61F9694CC008BD45A /* User.swift */; };
 		FA7E73F91F9694EA008BD45A /* Curriculum.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA7E73F81F9694EA008BD45A /* Curriculum.swift */; };
-		FA7E73FB1F969534008BD45A /* UserControlDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = FA7E73FA1F969534008BD45A /* UserControlDelegate.swift */; };
 		FAF276501F9D2E4100211341 /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = FAF2764F1F9D2E4100211341 /* ProfileViewController.swift */; };
 /* End PBXBuildFile section */
 
@@ -50,7 +49,6 @@
 		FA6CC3A61F9CA55F00F18B04 /* CustomTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTableViewCell.swift; sourceTree = "<group>"; };
 		FA7E73F61F9694CC008BD45A /* User.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		FA7E73F81F9694EA008BD45A /* Curriculum.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Curriculum.swift; sourceTree = "<group>"; };
-		FA7E73FA1F969534008BD45A /* UserControlDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserControlDelegate.swift; sourceTree = "<group>"; };
 		FAF2764F1F9D2E4100211341 /* ProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -87,20 +85,14 @@
 		0102C3951F94C6530065E4D5 /* Swifty Companion */ = {
 			isa = PBXGroup;
 			children = (
+				FAC05A0A1FB477EE00EE2F3E /* Controllers */,
+				FAC05A091FB477A200EE2F3E /* API */,
 				33E041371FB0542D0099E952 /* View */,
-				0102C3A81F94CDFD0065E4D5 /* APIController.swift */,
 				0102C3961F94C6530065E4D5 /* AppDelegate.swift */,
-				FA7E73F81F9694EA008BD45A /* Curriculum.swift */,
-				FA7E73F61F9694CC008BD45A /* User.swift */,
-				0102C3981F94C6530065E4D5 /* ViewController.swift */,
-				3354EAB01FA770DB003D6C7E /* MenuBar.swift */,
-				FA7E73FA1F969534008BD45A /* UserControlDelegate.swift */,
 				0102C39A1F94C6530065E4D5 /* Main.storyboard */,
 				0102C39D1F94C6530065E4D5 /* Assets.xcassets */,
 				0102C39F1F94C6530065E4D5 /* LaunchScreen.storyboard */,
 				0102C3A21F94C6530065E4D5 /* Info.plist */,
-				33EF69F61F9A1EBB00E1A9B0 /* SearchUsers.swift */,
-				FAF2764F1F9D2E4100211341 /* ProfileViewController.swift */,
 			);
 			path = "Swifty Companion";
 			sourceTree = "<group>";
@@ -116,6 +108,7 @@
 		33E041371FB0542D0099E952 /* View */ = {
 			isa = PBXGroup;
 			children = (
+				3354EAB01FA770DB003D6C7E /* MenuBar.swift */,
 				FA6CC3A61F9CA55F00F18B04 /* CustomTableViewCell.swift */,
 				FA686F401FAC63F80014C76A /* FeedCell.swift */,
 				FA686F421FAC70F80014C76A /* HomeCell.swift */,
@@ -133,6 +126,26 @@
 				C0384ADE263075DB607505AC /* Pods-Swifty Companion.release.xcconfig */,
 			);
 			name = Pods;
+			sourceTree = "<group>";
+		};
+		FAC05A091FB477A200EE2F3E /* API */ = {
+			isa = PBXGroup;
+			children = (
+				FA7E73F61F9694CC008BD45A /* User.swift */,
+				33EF69F61F9A1EBB00E1A9B0 /* SearchUsers.swift */,
+				FA7E73F81F9694EA008BD45A /* Curriculum.swift */,
+				0102C3A81F94CDFD0065E4D5 /* APIController.swift */,
+			);
+			name = API;
+			sourceTree = "<group>";
+		};
+		FAC05A0A1FB477EE00EE2F3E /* Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				0102C3981F94C6530065E4D5 /* ViewController.swift */,
+				FAF2764F1F9D2E4100211341 /* ProfileViewController.swift */,
+			);
+			name = Controllers;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -269,7 +282,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				FA7E73F71F9694CC008BD45A /* User.swift in Sources */,
-				FA7E73FB1F969534008BD45A /* UserControlDelegate.swift in Sources */,
 				33E041391FB054820099E952 /* ProjectCells.swift in Sources */,
 				33E0413B1FB05F5D0099E952 /* ProjectCell.swift in Sources */,
 				FA6CC3A71F9CA55F00F18B04 /* CustomTableViewCell.swift in Sources */,

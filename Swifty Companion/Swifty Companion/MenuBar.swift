@@ -20,7 +20,6 @@ class MenuBar : UIView, UICollectionViewDataSource, UICollectionViewDelegate, UI
         return cv
     }()
     
-    
     let horizontalSlider: UIView = {
         let bar = UIView()
         bar.backgroundColor = UIColor(white: 0.95, alpha: 1)
@@ -29,16 +28,13 @@ class MenuBar : UIView, UICollectionViewDataSource, UICollectionViewDelegate, UI
     }()
     
     var profileViewController:ProfileViewController?
-    
     let imageNames = ["home","account","stats"]
     let cellID = "Cell"
-    
     var sliderPosition: NSLayoutConstraint?
     
     override init (frame: CGRect) {
         super.init(frame: frame)        
         collectionView.register(MenuBarCell.self, forCellWithReuseIdentifier: cellID)
-        
         setupLayout()
         let indexPath = IndexPath(row: 0, section: 0)
         collectionView.selectItem(at: indexPath, animated: false, scrollPosition: [])
@@ -83,8 +79,6 @@ class MenuBar : UIView, UICollectionViewDataSource, UICollectionViewDelegate, UI
         horizontalSlider.widthAnchor.constraint(equalTo: self.widthAnchor, multiplier: 0.3).isActive = true
         horizontalSlider.heightAnchor.constraint(equalToConstant: 4).isActive = true
     }
-    
-    
 }
 
 class BaseCell: UICollectionViewCell {
@@ -119,9 +113,7 @@ class MenuBarCell: BaseCell {
             imageView.tintColor = isSelected ? UIColor.white : UIColor(red: 106 / 255, green: 119 / 255, blue: 119 / 255, alpha: 1)
         }
     }
-    
-    
-    
+
     override func setupViews() {
         super.setupViews()
         addSubview(imageView)
